@@ -8,15 +8,30 @@
     <script src="js/keys.js"></script>
  
     <style>
-    #selectable .ui-selected { background: #F39814; color: white; }
-    #selectable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-    #selectable li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+    #nav-container { width:100% } 
+
+    #nav-shows { list-style-type: none; margin: 0; padding: 0; width: 40%; display:inline; float:left; }
+    #nav-shows li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+
+    .ui-selected { background: #F39814; color: white; }
+    #nav-episodes { list-style-type: none; margin: 0; padding: 0; width: 60%; display:inline; float:right;  }
+    #nav-episodes li { margin: 3px; padding: 0.4em; font-size: 1.4em; height: 18px; }
+
     </style>
 
 </head>
 <body>
+
+<div id="nav-container">
  
-<ol id="selectable">
+<ul id="nav-shows">
+    <li class="nav-list-item" tabindex="0">Item 1</li>
+    <li class="nav-list-item" tabindex="1">Item 1</li>
+    <li class="nav-list-item" tabindex="2">Item 1</li>
+    <li class="nav-list-item" tabindex="3">Item 1</li>
+</ul>
+
+<ul id="nav-episodes">
     <li class="ui-widget-content" tabindex="0">Item 1</li>
     <li class="ui-widget-content" tabindex="1">Item 2</li>
     <li class="ui-widget-content" tabindex="2">Item 3</li>
@@ -24,7 +39,14 @@
     <li class="ui-widget-content" tabindex="4">Item 5</li>
     <li class="ui-widget-content" tabindex="5">Item 6</li>
     <li class="ui-widget-content" tabindex="6">Item 7</li>
-</ol>
+    <li class="ui-widget-content" tabindex="7">Item 8</li>
+    <li class="ui-widget-content" tabindex="8">Item 9</li>
+    <li class="ui-widget-content" tabindex="9">Item 10</li>
+    <li class="ui-widget-content" tabindex="10">Item 11</li>
+    <li class="ui-widget-content" tabindex="11">Item 12</li>
+</ul>
+
+</div>
  
 </body>
 </html>
