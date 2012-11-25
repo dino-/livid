@@ -1,40 +1,79 @@
 ($ document).ready ->
    createNavShows data
-###
-   # show list navigation 
-   $("#nav-shows li").bind {
+
+
+createNavShows = (alldata) ->
+   ul = $ '#nav-shows'
+   ul.append createShowLi showdata for showdata in alldata
+   $( "#nav-shows li" ).attr 'tabindex', (index, attr) -> index
+   lidata = _.zip ($ "#nav-shows li"), alldata
+   _.map lidata, setShowHandler
+
+
+createShowLi = (showdata) ->
+   "<li>#{showdata.title}</li>"
+
+
+createNavEpisodes = (episodes) ->
+   ul = $ '#nav-episodes'
+   ul.empty()
+   ul.append createEpisodeLi episode for episode in episodes
+   $( "#nav-episodes li" ).attr 'tabindex', (index, attr) -> index
+   lidata = _.zip ($ "#nav-episodes li"), episodes
+   _.map lidata, setEpisodeHandler
+
+ 
+createEpisodeLi = (epdata) ->
+   "<li>#{epdata.title}</li>"
+
+
+# Key handler for 'show' list navigation
+#
+# t is the tuple: (li, showdata)
+setShowHandler = (t) ->
+   li = $ t[0]
+   showdata = t[1]
+  
+   li.bind { 
+
       keydown: (e) ->
          key = e.keyCode
          target = $ e.currentTarget
-    
+       
          switch key
             when 38 # arrow up
                target.prev().focus()
                break
             when 39 # arrow right 
-               # TODO: update episodes
+               # TODO: nav to episodes
                break
             when 40 # arrow down
                target.next().focus()
                break
-    
+       
       focusin: (e) ->
          ($ e.currentTarget).addClass "ui-selected"
+         createNavEpisodes showdata.episodes
 
-    
       focusout: (e) ->
          ($ e.currentTarget).removeClass "ui-selected"
 
    }
-   ($ "li").first().focus()
 
+
+# Key handler for 'episode' list navigation
+#
+# t is the tuple: (li, epdata)
+setEpisodeHandler = (t) ->
+   li = $ t[0]
+   epdata = t[1]
   
-   # episodes list navigation
-   $("#nav-episodes li").bind {
+   li.bind {
+
       keydown: (e) ->
          key = e.keyCode
          target = $ e.currentTarget
-    
+       
          switch key
             when 37 # arrow left
                # TODO - deselect
@@ -45,68 +84,11 @@
             when 40 # arrow down
                target.next().focus()
                break
-    
+       
       focusin: (e) ->
          ($ e.currentTarget).addClass "ui-selected"
 
-    
       focusout: (e) ->
          ($ e.currentTarget).removeClass "ui-selected"
 
    }
-###
- 
-
-createNavShows = (alldata) ->
-   ul = $ '#nav-shows'
-   ul.append createShowLi showdata for showdata in alldata
-   $( "#nav-shows li" ).attr 'tabindex', (index, attr) -> index
-   $( "#nav-shows li").bind showHandler
-
-
-createShowLi = (showdata) ->
-   "<li>#{showdata.title}</li>"
-
-
-createNavEpisodes = (episodes) ->
-   #$( '#nav-episodes li' ).remove()
-   ul = $ '#nav-episodes'
-   ul.empty()
-   ul.append createEpisodeLi epdata for epdata in episodes
-
- 
-createEpisodeLi = (epdata) ->
-   "<li>#{epdata.title}</li>"
-
-
-showHandler =  {
-   keydown: (e) ->
-      key = e.keyCode
-      target = $ e.currentTarget
-    
-      switch key
-         when 38 # arrow up
-            target.prev().focus()
-            break
-         when 39 # arrow right 
-            # TODO: update episodes
-            break
-         when 40 # arrow down
-            target.next().focus()
-            break
-    
-   focusin: (e) ->
-      ($ e.currentTarget).addClass "ui-selected"
-      showdata =  getShowData ($ e.currentTarget).attr( 'tabindex' )
-      console.log "showdata=" + JSON.stringify showdata
-      createNavEpisodes showdata.episodes
-
-    
-   focusout: (e) ->
-      ($ e.currentTarget).removeClass "ui-selected"
-
-}
-
-
-getShowData = (index) ->
-   data[index]
