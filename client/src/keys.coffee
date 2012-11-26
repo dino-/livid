@@ -52,13 +52,9 @@ setShowHandler = (t) ->
                break
        
       focusin: (e) ->
-         ($ '.current-show' ).removeClass 'current-show'
-         ($ e.currentTarget).addClass 'ui-selected'
+         ($ '#nav-shows .ui-selected' ).removeClass 'ui-selected'
          createNavEpisodes showdata.episodes
-         ($ e.currentTarget).addClass 'current-show'
-
-      focusout: (e) ->
-         ($ e.currentTarget).removeClass 'ui-selected'
+         ($ e.currentTarget).addClass 'ui-selected'
 
    }
 
@@ -78,7 +74,7 @@ setEpisodeHandler = (t) ->
        
          switch key
             when 37 # arrow left
-               ($ '.current-show' ).focus()
+               ($ '#nav-shows .ui-selected' ).focus()
                break
             when 38 # arrow up
                target.prev().focus()
