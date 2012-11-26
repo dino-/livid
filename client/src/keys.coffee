@@ -1,5 +1,6 @@
 ($ document).ready ->
    createNavShows data
+   ($ '#nav-shows li:first').focus()
 
 
 createNavShows = (alldata) ->
