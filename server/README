@@ -1,0 +1,8 @@
+Build it:
+   cabal configure
+   cabal build
+
+And run it:
+   ./dist/build/vidproj-srv | tee vidproj-srv.log
+
+And then run things against it, pointed to localhost:8081
