@@ -34,7 +34,7 @@ setShowHandler = (t) ->
    li = $ t[0]
    showdata = t[1]
   
-   li.bind { 
+   li.bind {
 
       keydown: (e) ->
          key = e.keyCode
@@ -45,15 +45,17 @@ setShowHandler = (t) ->
                target.prev().focus()
                break
             when 39 # arrow right 
-               # TODO: nav to episodes
+               $( "#nav-episodes li:first" ).focus()
                break
             when 40 # arrow down
                target.next().focus()
                break
        
       focusin: (e) ->
+         $( ".current-show" ).removeClass "current-show"
          ($ e.currentTarget).addClass "ui-selected"
          createNavEpisodes showdata.episodes
+         ($ e.currentTarget).addClass "current-show"
 
       focusout: (e) ->
          ($ e.currentTarget).removeClass "ui-selected"
@@ -76,7 +78,7 @@ setEpisodeHandler = (t) ->
        
          switch key
             when 37 # arrow left
-               # TODO - deselect
+               $( ".current-show" ).focus()
                break
             when 38 # arrow up
                target.prev().focus()
