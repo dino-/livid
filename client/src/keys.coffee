@@ -5,8 +5,8 @@
 createNavShows = (alldata) ->
    ul = $ '#nav-shows'
    ul.append createShowLi showdata for showdata in alldata
-   $( "#nav-shows li" ).attr 'tabindex', (index, attr) -> index
-   lidata = _.zip ($ "#nav-shows li"), alldata
+   ($ '#nav-shows li' ).attr 'tabindex', (index, attr) -> index
+   lidata = _.zip ($ '#nav-shows li'), alldata
    _.map lidata, setShowHandler
 
 
@@ -18,8 +18,8 @@ createNavEpisodes = (episodes) ->
    ul = $ '#nav-episodes'
    ul.empty()
    ul.append createEpisodeLi episode for episode in episodes
-   $( "#nav-episodes li" ).attr 'tabindex', (index, attr) -> index
-   lidata = _.zip ($ "#nav-episodes li"), episodes
+   ($ '#nav-episodes li' ).attr 'tabindex', (index, attr) -> index
+   lidata = _.zip ($ '#nav-episodes li'), episodes
    _.map lidata, setEpisodeHandler
 
  
@@ -45,20 +45,20 @@ setShowHandler = (t) ->
                target.prev().focus()
                break
             when 39 # arrow right 
-               $( "#nav-episodes li:first" ).focus()
+               $( '#nav-episodes li:first' ).focus()
                break
             when 40 # arrow down
                target.next().focus()
                break
        
       focusin: (e) ->
-         $( ".current-show" ).removeClass "current-show"
-         ($ e.currentTarget).addClass "ui-selected"
+         ($ '.current-show' ).removeClass 'current-show'
+         ($ e.currentTarget).addClass 'ui-selected'
          createNavEpisodes showdata.episodes
-         ($ e.currentTarget).addClass "current-show"
+         ($ e.currentTarget).addClass 'current-show'
 
       focusout: (e) ->
-         ($ e.currentTarget).removeClass "ui-selected"
+         ($ e.currentTarget).removeClass 'ui-selected'
 
    }
 
@@ -78,7 +78,7 @@ setEpisodeHandler = (t) ->
        
          switch key
             when 37 # arrow left
-               $( ".current-show" ).focus()
+               ($ '.current-show' ).focus()
                break
             when 38 # arrow up
                target.prev().focus()
@@ -88,9 +88,9 @@ setEpisodeHandler = (t) ->
                break
        
       focusin: (e) ->
-         ($ e.currentTarget).addClass "ui-selected"
+         ($ e.currentTarget).addClass 'ui-selected'
 
       focusout: (e) ->
-         ($ e.currentTarget).removeClass "ui-selected"
+         ($ e.currentTarget).removeClass 'ui-selected'
 
    }
