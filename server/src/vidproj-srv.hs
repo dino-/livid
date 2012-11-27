@@ -51,15 +51,6 @@ unknownResource = path $ \s -> do
 
 
 {-
-getSomething :: ServerPart Response
-getSomething = do
-   liftIO $ putStrLn "\nsomething handled"
-
-   ok $ toResponse $ ("<foo><bar>baz</bar></foo>" :: String)
--}
-
-
-{-
 bodyPolicy :: BodyPolicy
 bodyPolicy = (defaultBodyPolicy "/tmp/" 0 1000 1000)
 -}
