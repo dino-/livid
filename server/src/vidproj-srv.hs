@@ -44,10 +44,10 @@ routing = msum
 
 
 unknownResource :: ServerPart Response
-unknownResource = do
-   let errMsg = "Unknown resource"
+unknownResource = path $ \s -> do
+   let errMsg = "Unknown resource: " ++ s
    liftIO $ putStrLn errMsg
-   notFound $ toResponse (errMsg :: String)
+   notFound $ toResponse errMsg
 
 
 {-
