@@ -12,6 +12,7 @@ import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
    )
+import Text.JSON
 import Text.Printf
 
 
@@ -38,9 +39,31 @@ main = do
 routing :: ServerPart Response
 routing = msum
    --[ dir "xml" $ fileServing
-   --[ notFound $ toResponse ("Unknown resource" :: String)
-   [ unknownResource
+   [ dir "getShowList" $ getShowList
+   , unknownResource
    ]
+
+
+getShowList :: ServerPart Response
+getShowList = do
+   method GET
+
+   liftIO $ putStrLn "Received getShowList request"
+
+
+   -- FIXME loading dev data file for now
+   jsonRaw <- liftIO $ fmap (unlines . tail . lines) $
+      readFile $ "../client/dev/data.js"
+
+   let json :: JSValue = case decodeStrict jsonRaw of
+         Ok j -> j
+         Error err -> error err
+
+   let jsonEncoded = encodeStrict json
+
+
+   ok $ toResponse (jsonEncoded :: String)
+
 
 
 unknownResource :: ServerPart Response
