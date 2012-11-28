@@ -46,7 +46,7 @@
 \.installed-pkg-config
 \.setup-config
 # standard cabal build dir, might not be boring for everybody
-^server/dist(/|$)
+(^|/)dist(/|$)
 # autotools
 (^|/)autom4te\.cache($|/)
 (^|/)config\.(log|status)$

@@ -5,8 +5,8 @@
 
 # project variables
 
-srcDir = 'src'
-buildDir = 'dist/js'
+srcDir = 'src/coffee'
+buildDir = 'site/js'
 
 
 # convenience function to exec shell commands with output
