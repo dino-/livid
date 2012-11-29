@@ -38,9 +38,8 @@ main = do
 
 routing :: ServerPart Response
 routing = msum
-   --[ dir "xml" $ fileServing
    [ dir "getShowList" $ getShowList
-   , unknownResource
+   , serveDirectory DisableBrowsing ["index.html"] "site"
    ]
 
 
@@ -65,33 +64,8 @@ getShowList = do
    ok $ toResponse (jsonEncoded :: String)
 
 
-
 unknownResource :: ServerPart Response
 unknownResource = path $ \s -> do
    let errMsg = "Unknown resource: " ++ s
    liftIO $ putStrLn errMsg
    notFound $ toResponse errMsg
-
-
-{-
-bodyPolicy :: BodyPolicy
-bodyPolicy = (defaultBodyPolicy "/tmp/" 0 1000 1000)
--}
-
-
-{-
-fileServing :: ServerPart Response
-fileServing = do
-   decodeBody bodyPolicy
-
-   xmlPath <- path $ \(filename :: String) ->
-      return $ "resources" </> filename
-
-   liftIO $ putStrLn $ printf "trying to serve file: %s" xmlPath
-
-   fileFound <- liftIO $ doesFileExist xmlPath
-   if (fileFound)
-      then serveFile (asContentType "text/xml") xmlPath
-      else notFound $ toResponse
-         ((printf "File not available: %s" xmlPath) :: String)
--}
