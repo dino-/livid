@@ -62,10 +62,3 @@ getShowList = do
 
 
    ok $ toResponse (jsonEncoded :: String)
-
-
-unknownResource :: ServerPart Response
-unknownResource = path $ \s -> do
-   let errMsg = "Unknown resource: " ++ s
-   liftIO $ putStrLn errMsg
-   notFound $ toResponse errMsg
