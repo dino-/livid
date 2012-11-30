@@ -52,7 +52,7 @@ getShowList = do
 
    -- FIXME loading dev data file for now
    jsonRaw <- liftIO $ fmap (unlines . tail . lines) $
-      readFile $ "../client/dev/data.js"
+      readFile $ "site/dummy-data.js"
 
    let json :: JSValue = case decodeStrict jsonRaw of
          Ok j -> j
