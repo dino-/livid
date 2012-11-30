@@ -1,5 +1,7 @@
 ($ document).ready ->
-   createNavShows data
+   req = $ .getJSON '/getShowList', (data) -> 
+      createNavShows data
+   req.error (resp) -> ($ 'body').html resp.responseText
    ($ '#nav-shows li:first').focus()
 
 
