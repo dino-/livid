@@ -4,13 +4,15 @@ module Main where
 
 import Control.Monad
 import Control.Monad.IO.Class
+import Data.Aeson ( encode )
+import qualified Data.ByteString.Lazy.Char8 as BL
+import GHC.Generics ( Generic )
 import Happstack.Server
 import System.Environment ( getArgs )
 import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
    )
-import Text.JSON
 import Text.Printf
 
 import Vidproj.Directory
@@ -49,21 +51,12 @@ getShowList = do
 
    liftIO $ putStrLn "Received getShowList request"
 
+   eps <- liftIO $ getPrograms "testsuite/vid/nonempty1"
+   let programs = case eps of
+         Right ps -> ps
+         Left err -> error err
 
-   liftIO $ do
-      programs <- getPrograms "testsuite/vid/nonempty1"
-      print programs
+   let json = encode (programs :: Programs)
+   liftIO $ BL.putStrLn json
 
-
-   -- FIXME loading dev data file for now
-   jsonRaw <- liftIO $ fmap (unlines . tail . lines) $
-      readFile $ "site/dummy-data.js"
-
-   let json :: JSValue = case decodeStrict jsonRaw of
-         Ok j -> j
-         Error err -> error err
-
-   let jsonEncoded = encodeStrict json
-
-
-   ok $ toResponse (jsonEncoded :: String)
+   ok $ toResponse (json :: BL.ByteString)

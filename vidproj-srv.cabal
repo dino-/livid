@@ -17,10 +17,11 @@ tested-with:         GHC >= 7.6.1
 executable           vidproj-srv
    main-is:          vidproj-srv.hs
    hs-source-dirs:   src/hs
-   build-depends:    base >= 3 && < 5,
+   build-depends:    aeson,
+                     base >= 3 && < 5,
+                     bytestring,
                      directory,
                      filepath,
-                     json,
                      happstack-server,
                      mtl,
                      transformers
