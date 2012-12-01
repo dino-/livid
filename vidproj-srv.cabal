@@ -18,7 +18,10 @@ executable           vidproj-srv
    main-is:          vidproj-srv.hs
    hs-source-dirs:   src/hs
    build-depends:    base >= 3 && < 5,
+                     directory,
+                     filepath,
                      json,
                      happstack-server,
+                     mtl,
                      transformers
    ghc-options:      -Wall -threaded

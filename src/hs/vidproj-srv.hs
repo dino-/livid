@@ -5,15 +5,15 @@ module Main where
 import Control.Monad
 import Control.Monad.IO.Class
 import Happstack.Server
---import System.Directory ( doesFileExist )
 import System.Environment ( getArgs )
---import System.FilePath
 import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
    )
 import Text.JSON
 import Text.Printf
+
+import Vidproj.Directory
 
 
 defaultPort :: Int
@@ -48,6 +48,11 @@ getShowList = do
    method GET
 
    liftIO $ putStrLn "Received getShowList request"
+
+
+   liftIO $ do
+      programs <- getPrograms "testsuite/vid/nonempty1"
+      print programs
 
 
    -- FIXME loading dev data file for now
