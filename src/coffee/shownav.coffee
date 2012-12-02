@@ -92,7 +92,7 @@ setEpisodeHandler = (t) ->
 
 
 playVideo = (ep) ->
-   alert 'playing: ' + ep.playpath
+   #alert 'playing: ' + ep.playpath
    $.ajax {
       url: 'playVideo'
       type: 'POST'
