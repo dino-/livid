@@ -57,7 +57,7 @@ getShowList = do
          Left err -> error err
 
    let json = encode (programs :: Programs)
-   liftIO $ BL.putStrLn json
+   --liftIO $ BL.putStrLn json
 
    ok $ toResponse (json :: BL.ByteString)
 
@@ -77,7 +77,7 @@ playVideo = do
    liftIO $ case mbBody of
       Just b -> do
          let playpath = BL.unpack . unBody $ b
-         printf "path: %s" playpath
+         printf "path: %s\n" playpath
 
       Nothing ->
          putStrLn "NO PATH! BAD!"
