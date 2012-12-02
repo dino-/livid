@@ -1,31 +1,23 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Vidproj.Directory where
+module Vidproj.Program where
 
 import Control.Monad.Error
 import Data.Function ( on )
-import Data.Aeson ( FromJSON, ToJSON, encode )
-import Data.ByteString.Lazy.Char8 hiding ( filter, notElem, map )
+import Data.Aeson ( FromJSON, ToJSON )
+--import Data.ByteString.Lazy.Char8 hiding ( filter, notElem, map )
 import Data.List
 import GHC.Generics ( Generic )
 import System.Directory ( doesDirectoryExist, getDirectoryContents )
 import System.FilePath
 import Text.Printf
 
-
-data Episode = Episode
-   { epTitle :: String
-   , epDate :: String
-   }
-   deriving (Show, Generic)
-
-instance FromJSON Episode
-instance ToJSON Episode
+import qualified Vidproj.Episode as E
 
 
 data Program = Program
-   { pTitle :: String
-   , pEpisodes :: [Episode]
+   { title :: String
+   , episodes :: [E.Episode]
    }
    deriving (Show, Generic)
 
@@ -60,7 +52,7 @@ getPrograms root = runErrorT $ do
    progDirs <- liftIO $ contentsWithoutDots root
    programs <- liftIO $ mapM (getProgram root) progDirs
 
-   return $ Programs $ sortBy (compare `on` pTitle) programs
+   return $ Programs $ sortBy (compare `on` title) programs
 
 
 {- Get an individual program and its episodes. Data is contained
@@ -69,5 +61,5 @@ getPrograms root = runErrorT $ do
 getProgram :: FilePath -> FilePath -> IO Program
 getProgram root dir = do
    epPaths <- liftIO $ contentsWithoutDots $ root </> dir
-   let episodes = map (\title -> Episode title "") epPaths
-   return $ Program dir (sortBy (compare `on` epTitle) episodes)
+   let episodes' = map (\title' -> E.Episode title' "") epPaths
+   return $ Program dir (sortBy (compare `on` E.title) episodes')

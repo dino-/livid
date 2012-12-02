@@ -8,7 +8,7 @@ createNavShows = (alldata) ->
 
 
 createShowLi = (showdata) ->
-   "<li>#{showdata.pTitle}</li>"
+   "<li>#{showdata.title}</li>"
 
 
 createNavEpisodes = (episodes) ->
@@ -21,7 +21,7 @@ createNavEpisodes = (episodes) ->
 
 
 createEpisodeLi = (epdata) ->
-   "<li>#{epdata.epTitle}</li>"
+   "<li>#{epdata.title}</li>"
 
 
 # Key handler for 'show' list navigation
@@ -47,7 +47,7 @@ setShowHandler = (t) ->
 
       focusin: (e) ->
          ($ '#nav-shows .ui-selected' ).removeClass 'ui-selected'
-         createNavEpisodes showdata.pEpisodes
+         createNavEpisodes showdata.episodes
          ($ e.currentTarget).addClass 'ui-selected'
 
    }
@@ -68,7 +68,7 @@ setEpisodeHandler = (t) ->
 
          switch key
             when 13, 32 # enter or space
-               playEpisode epdata.epTitle
+               playEpisode epdata.title
             when 37 # arrow left
                ($ '#nav-shows .ui-selected' ).focus()
             when 38 # arrow up
@@ -80,7 +80,7 @@ setEpisodeHandler = (t) ->
                   ($ '#nav-episodes li:first').focus()
                else target.next().focus()
             when 46, 68 # delete or'd' key
-               delEpisode epdata.epTitle
+               delEpisode epdata.title
 
       focusin: (e) ->
          ($ e.currentTarget).addClass 'ui-selected'

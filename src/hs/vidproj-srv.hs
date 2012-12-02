@@ -6,7 +6,6 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson ( encode )
 import qualified Data.ByteString.Lazy.Char8 as BL
-import GHC.Generics ( Generic )
 import Happstack.Server
 import System.Environment ( getArgs )
 import System.IO
@@ -15,7 +14,7 @@ import System.IO
    )
 import Text.Printf
 
-import Vidproj.Directory
+import Vidproj.Program
 
 
 defaultPort :: Int
