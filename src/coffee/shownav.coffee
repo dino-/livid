@@ -98,6 +98,7 @@ playVideo = (ep) ->
       type: 'POST'
       data: ep.playpath
       dataType: 'text'
+      contentType: 'text/plain'
       #TODO: success: () -> console.log 'success'
    }
 
