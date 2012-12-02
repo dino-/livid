@@ -12,6 +12,7 @@ import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
    )
+import System.Process ( runCommand )
 import Text.Printf
 
 import Vidproj.Program
@@ -77,7 +78,10 @@ playVideo = do
    liftIO $ case mbBody of
       Just b -> do
          let playpath = BL.unpack . unBody $ b
-         printf "path: %s\n" playpath
+         --printf "path: %s\n" playpath
+
+         _ <- runCommand $ printf "vlc \"%s\"" playpath
+         return ()
 
       Nothing ->
          putStrLn "NO PATH! BAD!"

@@ -25,5 +25,6 @@ executable           vidproj-srv
                      ghc-prim,
                      happstack-server,
                      mtl,
+                     process,
                      transformers
    ghc-options:      -Wall -threaded
