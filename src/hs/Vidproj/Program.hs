@@ -73,7 +73,10 @@ getPrograms root = runErrorT $ do
       printf "Directory %s does not exist!" root
 
    progDirs <- liftIO $ contentsWithoutDots root
-   liftIO $ mapM (getProgram root) progDirs
+   liftIO $ do
+      allProgs <- mapM (getProgram root) progDirs
+      -- Get rid of shows with no episodes at this time
+      return $ filter (not . null . episodes) allProgs
 
 
 {- Get an individual program and its episodes. Data is contained
