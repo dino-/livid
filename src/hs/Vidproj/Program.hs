@@ -61,5 +61,9 @@ getPrograms root = runErrorT $ do
 getProgram :: FilePath -> FilePath -> IO Program
 getProgram root dir = do
    epPaths <- liftIO $ contentsWithoutDots $ root </> dir
-   let episodes' = map (\title' -> E.Episode title' "") epPaths
+
+   -- FIXME get real dates instead of this empty string
+   let epsWithDate = zip epPaths $ repeat ""
+
+   let episodes' = map (E.mkEpisode root dir) epsWithDate
    return $ Program dir (sortBy (compare `on` E.title) episodes')
