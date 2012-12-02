@@ -11,6 +11,7 @@ import GHC.Generics ( Generic )
 import System.Directory ( doesDirectoryExist, getDirectoryContents )
 import System.FilePath
 import Text.Printf
+import Text.Regex
 
 import qualified Vidproj.Episode as E
 
@@ -52,7 +53,8 @@ getPrograms root = runErrorT $ do
    progDirs <- liftIO $ contentsWithoutDots root
    programs <- liftIO $ mapM (getProgram root) progDirs
 
-   return $ Programs $ sortBy (compare `on` title) programs
+   return $ Programs
+      $ sortBy (compare `on` (makeSortable . title)) programs
 
 
 {- Get an individual program and its episodes. Data is contained
@@ -66,4 +68,12 @@ getProgram root dir = do
    let epsWithDate = zip epPaths $ repeat ""
 
    let episodes' = map (E.mkEpisode root dir) epsWithDate
-   return $ Program dir (sortBy (compare `on` E.title) episodes')
+   return $ Program dir
+      (sortBy (compare `on` (makeSortable . E.title)) episodes')
+
+
+makeSortable :: String -> String
+makeSortable s = foldl (flip id) s modifiers where
+   modifiers =
+      [ \s' -> subRegex (mkRegex "^[Tt]he[ ._-]") s' ""
+      ]

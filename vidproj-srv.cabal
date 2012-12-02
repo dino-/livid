@@ -26,5 +26,6 @@ executable           vidproj-srv
                      happstack-server,
                      mtl,
                      process,
+                     regex-compat,
                      transformers
    ghc-options:      -Wall -threaded
