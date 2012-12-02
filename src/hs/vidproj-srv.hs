@@ -40,6 +40,7 @@ main = do
 routing :: ServerPart Response
 routing = msum
    [ dir "getShowList" $ getShowList
+   , dir "playVideo" $ playVideo
    , serveDirectory DisableBrowsing ["index.html"] "site"
    ]
 
@@ -59,3 +60,26 @@ getShowList = do
    liftIO $ BL.putStrLn json
 
    ok $ toResponse (json :: BL.ByteString)
+
+
+bodyPolicy :: BodyPolicy
+bodyPolicy = (defaultBodyPolicy "/tmp/" 0 1000 1000)
+
+
+playVideo :: ServerPart Response
+playVideo = do
+   method POST
+   decodeBody bodyPolicy
+
+   liftIO $ putStrLn "Received playVideo request"
+
+   mbBody <- takeRequestBody =<< askRq
+   liftIO $ case mbBody of
+      Just b -> do
+         let playpath = BL.unpack . unBody $ b
+         printf "path: %s" playpath
+
+      Nothing ->
+         putStrLn "NO PATH! BAD!"
+
+   ok $ toResponse ("got it" :: String)
