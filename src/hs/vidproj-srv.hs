@@ -52,10 +52,14 @@ getShowList = do
 
    liftIO $ putStrLn "Received getShowList request"
 
-   eps <- liftIO $ getPrograms "testsuite/vid/nonempty1"
-   let programs = case eps of
-         Right ps -> ps
-         Left err -> error err
+   (errMsgs, programs) <- liftIO $ getAllPrograms
+      [ "testsuite/vid/empty"
+      , "testsuite/vid/doesnotexist"
+      , "testsuite/vid/nonempty2"
+      , "testsuite/vid/nonempty1"
+      ]
+
+   liftIO $ mapM_ putStrLn errMsgs
 
    let json = encode (programs :: Programs)
    --liftIO $ BL.putStrLn json

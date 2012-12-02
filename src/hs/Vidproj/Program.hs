@@ -1,8 +1,14 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Vidproj.Program where
+module Vidproj.Program
+   ( Programs (..)
+   , Program (..)
+   , getAllPrograms
+   )
+where
 
 import Control.Monad.Error
+import Data.Either ( partitionEithers )
 import Data.Function ( on )
 import Data.Aeson ( FromJSON, ToJSON )
 --import Data.ByteString.Lazy.Char8 hiding ( filter, notElem, map )
@@ -41,20 +47,33 @@ contentsWithoutDots path =
    fmap (filter (`notElem` [".", ".."])) $ getDirectoryContents path
 
 
+getAllPrograms :: [FilePath] -> IO ([String], Programs)
+getAllPrograms topDirs = do
+   -- Call getPrograms on all dirs, getting a [Either String Programs]
+   -- Separate the errors from the good data
+   -- Combine the errors into one list of String
+   (errors, llps) <- fmap partitionEithers $ mapM getPrograms topDirs
+
+   -- Combine the program data into one [Program]
+   -- Sort that list
+   let ps = sortBy (compare `on` (makeSortable . title))
+         $ concat llps
+
+   -- Send it all back as a tuple
+   return (errors, Programs ps)
+
+
 {- Get all programs and their episodes given a root directory. Data
    is contained in a list of Program data structures
 -}
-getPrograms :: FilePath -> IO (Either String Programs)
+getPrograms :: FilePath -> IO (Either String [Program])
 getPrograms root = runErrorT $ do
    topExists <- liftIO $ doesDirectoryExist root
    unless topExists $ throwError $
       printf "Directory %s does not exist!" root
 
    progDirs <- liftIO $ contentsWithoutDots root
-   programs <- liftIO $ mapM (getProgram root) progDirs
-
-   return $ Programs
-      $ sortBy (compare `on` (makeSortable . title)) programs
+   liftIO $ mapM (getProgram root) progDirs
 
 
 {- Get an individual program and its episodes. Data is contained
