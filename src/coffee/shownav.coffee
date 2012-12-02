@@ -68,7 +68,7 @@ setEpisodeHandler = (t) ->
 
          switch key
             when 13, 32 # enter or space
-               playEpisode epdata.title
+               playVideo epdata
             when 37 # arrow left
                ($ '#nav-shows .ui-selected' ).focus()
             when 38 # arrow up
@@ -91,8 +91,15 @@ setEpisodeHandler = (t) ->
    }
 
 
-playEpisode = (ep) ->
-   alert 'play: ' + ep
+playVideo = (ep) ->
+   alert 'playing: ' + ep.playpath
+   $ .ajax {
+      url: 'playVideo'
+      type: 'POST'
+      data: ep.playpath
+      dataType: 'text'
+      #TODO: success: () -> console.log 'success'
+   }
 
 
 delEpisode = (ep) ->
