@@ -22,6 +22,7 @@ executable           vidproj-srv
                      bytestring,
                      directory,
                      filepath,
+                     ghc-prim,
                      happstack-server,
                      mtl,
                      transformers
