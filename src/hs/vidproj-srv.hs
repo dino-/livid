@@ -12,6 +12,7 @@ import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
    )
+import System.Posix.Files ( removeLink )
 import System.Process ( runCommand )
 import Text.Printf
 
@@ -42,6 +43,7 @@ routing :: ServerPart Response
 routing = msum
    [ dir "getShowList" $ getShowList
    , dir "playVideo" $ playVideo
+   , dir "delVideo" $ delVideo
    , serveDirectory DisableBrowsing ["index.html"] "site"
    ]
 
@@ -86,6 +88,26 @@ playVideo = do
 
          _ <- runCommand $ printf "vlc \"%s\"" playpath
          return ()
+
+      Nothing ->
+         putStrLn "NO PATH! BAD!"
+
+   ok $ toResponse ("got it" :: String)
+
+
+delVideo :: ServerPart Response
+delVideo = do
+   method POST
+   decodeBody bodyPolicy
+
+   liftIO $ putStrLn "Received delVideo request"
+
+   mbBody <- takeRequestBody =<< askRq
+   liftIO $ case mbBody of
+      Just b -> do
+         let playpath = BL.unpack . unBody $ b
+         --printf "deleting path: %s\n" playpath
+         removeLink playpath
 
       Nothing ->
          putStrLn "NO PATH! BAD!"

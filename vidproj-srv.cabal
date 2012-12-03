@@ -27,5 +27,6 @@ executable           vidproj-srv
                      mtl,
                      process,
                      regex-compat,
-                     transformers
+                     transformers,
+                     unix
    ghc-options:      -Wall -threaded
