@@ -80,7 +80,7 @@ setEpisodeHandler = (t) ->
                   ($ '#nav-episodes li:first').focus()
                else target.next().focus()
             when 46, 68 # delete or'd' key
-               delEpisode epdata.title
+               delEpisode epdata
 
       focusin: (e) ->
          ($ e.currentTarget).addClass 'ui-selected'
@@ -104,7 +104,15 @@ playVideo = (ep) ->
 
 
 delEpisode = (ep) ->
-   alert 'delete: ' + ep
+   alert 'delete: ' + ep.playpath
+   $.ajax {
+      url: 'delVideo'
+      type: 'POST'
+      data: ep.playpath
+      dataType: 'text'
+      contentType: 'text/plain'
+      #TODO: success: () -> console.log 'success'
+   }
 
 
 define
