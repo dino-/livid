@@ -15,9 +15,9 @@ options:
    -h, --help  This help info
 
 commands:
-   start     Laptop display only
-   stop      External monitor only
-   restart   Both of the above outputs, laptop on the left
+   start     Start the server
+   stop      Stop the server
+   restart   Stop and then start the server again
 
 USAGE
 
