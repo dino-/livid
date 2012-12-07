@@ -11,6 +11,7 @@ require ["shownav"], (nav) ->
    ($ document).ready ->
       req = $.getJSON '/getShowList', (data) ->
          nav.createNavShows data
+         document.body.style.visibility = 'visible'
       req.error (resp) -> ($ 'body').html resp.responseText
 
       # Call this now and set it on window resize

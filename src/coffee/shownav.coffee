@@ -80,7 +80,7 @@ setEpisodeHandler = (t) ->
                   ($ '#nav-episodes li:first').focus()
                else target.next().focus()
             when 46, 68 # delete or'd' key
-               delEpisode epdata
+               showDeleteDialog epdata
 
       focusin: (e) ->
          ($ e.currentTarget).addClass 'ui-selected'
@@ -92,7 +92,6 @@ setEpisodeHandler = (t) ->
 
 
 playVideo = (ep) ->
-   #alert 'playing: ' + ep.playpath
    $.ajax {
       url: 'playVideo'
       type: 'POST'
@@ -103,8 +102,23 @@ playVideo = (ep) ->
    }
 
 
+showDeleteDialog = (ep) ->
+   $( '#del-confirm-dialog' ).dialog {
+      width: 400
+      buttons:
+         Delete: () ->
+            console.log 'deleting...'
+            delEpisode ep
+            ($ this).dialog 'close'
+
+         Cancel: () ->
+            console.log 'canceling...'
+            ($ this).dialog 'close'
+   }
+   $( '#del-confirm-dialog' ).dialog 'open'
+
+
 delEpisode = (ep) ->
-   alert 'delete: ' + ep.playpath
    $.ajax {
       url: 'delVideo'
       type: 'POST'
