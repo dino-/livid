@@ -24,6 +24,10 @@ import Livid.Conf
 import Livid.Program
 
 
+version :: String
+version = "1.2.0"
+
+
 defaultPort :: Int
 defaultPort = 8082
 
@@ -53,6 +57,7 @@ routing confMap = msum
    [ dir "getShowList" $ getShowList confMap
    , dir "playVideo" $ playVideo
    , dir "delVideo" $ delVideo
+   , dir "getVersion" $ getVersion
    , serveDirectory DisableBrowsing ["index.html"] "site"
    ]
 
@@ -125,3 +130,10 @@ delVideo = do
 
 splitList :: String -> [String]
 splitList s = splitRegex (mkRegex ";") s
+
+
+getVersion :: ServerPart Response
+getVersion = do
+   method GET
+
+   ok $ toResponse (version :: String)
