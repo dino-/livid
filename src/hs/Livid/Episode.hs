@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Vidproj.Episode where
+module Livid.Episode where
 
 import Data.Aeson ( FromJSON, ToJSON )
 import GHC.Generics ( Generic )

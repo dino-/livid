@@ -6,7 +6,7 @@ basename=`basename $0`
 
 function usage {
    cat <<USAGE
-$basename - Control vidproj server
+$basename - Control livid server
 
 usage:
    $basename [OPTIONS] COMMAND
@@ -25,7 +25,7 @@ USAGE
 }
 
 
-binFullPath="dist/build/vidproj-srv/vidproj-srv"
+binFullPath="dist/build/livid-srv/livid-srv"
 binary=`basename $binFullPath`
 
 case "$1" in

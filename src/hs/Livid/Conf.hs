@@ -5,7 +5,7 @@
 {- |
    Simple module for loading config files
 -}
-module Vidproj.Conf
+module Livid.Conf
    ( ConfMap, parseToMap )
    where
 

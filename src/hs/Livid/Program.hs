@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Vidproj.Program
+module Livid.Program
    ( Programs (..)
    , Program (..)
    , getAllPrograms
@@ -19,7 +19,7 @@ import System.FilePath
 import Text.Printf
 import Text.Regex
 
-import qualified Vidproj.Episode as E
+import qualified Livid.Episode as E
 
 
 data Program = Program

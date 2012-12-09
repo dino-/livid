@@ -20,8 +20,8 @@ import System.Process ( runCommand )
 import Text.Printf
 import Text.Regex ( mkRegex, splitRegex )
 
-import Vidproj.Conf
-import Vidproj.Program
+import Livid.Conf
+import Livid.Program
 
 
 defaultPort :: Int
@@ -29,7 +29,7 @@ defaultPort = 8082
 
 
 defaultConfFile :: FilePath
-defaultConfFile = "vidproj.conf"
+defaultConfFile = "livid.conf"
 
 
 main :: IO ()

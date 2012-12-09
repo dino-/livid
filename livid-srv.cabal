@@ -1,4 +1,4 @@
-name:                vidproj-srv
+name:                livid-srv
 version:             1.2.0
 cabal-version:       >= 1.2
 build-type:          Simple
@@ -14,8 +14,8 @@ description:         Bar Baz
 category:            Unknown
 tested-with:         GHC >= 7.6.1
 
-executable           vidproj-srv
-   main-is:          vidproj-srv.hs
+executable           livid-srv
+   main-is:          livid-srv.hs
    hs-source-dirs:   src/hs
    build-depends:    aeson,
                      base >= 3 && < 5,
