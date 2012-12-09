@@ -47,12 +47,13 @@ contentsWithoutDots path =
    fmap (filter (`notElem` [".", ".."])) $ getDirectoryContents path
 
 
-getAllPrograms :: [FilePath] -> IO ([String], Programs)
-getAllPrograms topDirs = do
+getAllPrograms :: [FilePath] -> [String] -> IO ([String], Programs)
+getAllPrograms topDirs vidExts = do
    -- Call getPrograms on all dirs, getting a [Either String Programs]
    -- Separate the errors from the good data
    -- Combine the errors into one list of String
-   (errors, llps) <- fmap partitionEithers $ mapM getPrograms topDirs
+   (errors, llps) <- fmap partitionEithers $ mapM
+      (getPrograms vidExts) topDirs
 
    -- Combine the program data into one [Program]
    -- Sort that list
@@ -66,15 +67,15 @@ getAllPrograms topDirs = do
 {- Get all programs and their episodes given a root directory. Data
    is contained in a list of Program data structures
 -}
-getPrograms :: FilePath -> IO (Either String [Program])
-getPrograms root = runErrorT $ do
+getPrograms :: [String] -> FilePath -> IO (Either String [Program])
+getPrograms vidExts root = runErrorT $ do
    topExists <- liftIO $ doesDirectoryExist root
    unless topExists $ throwError $
       printf "Directory %s does not exist!" root
 
    progDirs <- liftIO $ contentsWithoutDots root
    liftIO $ do
-      allProgs <- mapM (getProgram root) progDirs
+      allProgs <- mapM (getProgram root vidExts) progDirs
       -- Get rid of shows with no episodes at this time
       return $ filter (not . null . episodes) allProgs
 
@@ -82,12 +83,14 @@ getPrograms root = runErrorT $ do
 {- Get an individual program and its episodes. Data is contained
    in a Program data structure
 -}
-getProgram :: FilePath -> FilePath -> IO Program
-getProgram root dir = do
+getProgram :: FilePath -> [String] -> FilePath -> IO Program
+getProgram root vidExts dir = do
    epPaths <- liftIO $ contentsWithoutDots $ root </> dir
 
+   let filteredEps = filter (\p -> any (p `endsWith`) vidExts) epPaths
+
    -- FIXME get real dates instead of this empty string
-   let epsWithDate = zip epPaths $ repeat ""
+   let epsWithDate = zip filteredEps $ repeat ""
 
    let episodes' = map (E.mkEpisode root dir) epsWithDate
    return $ Program dir
@@ -99,3 +102,7 @@ makeSortable s = foldl (flip id) s modifiers where
    modifiers =
       [ \s' -> subRegex (mkRegex "^[Tt]he[ ._-]") s' ""
       ]
+
+
+endsWith :: Eq a => [a] -> [a] -> Bool
+long `endsWith` short = (reverse short) `isPrefixOf` (reverse long)

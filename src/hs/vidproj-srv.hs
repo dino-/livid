@@ -6,8 +6,11 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson ( encode )
 import qualified Data.ByteString.Lazy.Char8 as BL
+import Data.Map
+-- FIXME
+import Data.Maybe ( fromJust )
 import Happstack.Server
-import System.Environment ( getArgs )
+import Prelude hiding ( lookup )
 import System.IO
    ( BufferMode ( NoBuffering )
    , hSetBuffering, stdout, stderr
@@ -15,12 +18,18 @@ import System.IO
 import System.Posix.Files ( removeLink )
 import System.Process ( runCommand )
 import Text.Printf
+import Text.Regex ( mkRegex, splitRegex )
 
+import Vidproj.Conf
 import Vidproj.Program
 
 
 defaultPort :: Int
-defaultPort = 8081
+defaultPort = 8082
+
+
+defaultConfFile :: FilePath
+defaultConfFile = "vidproj.conf"
 
 
 main :: IO ()
@@ -28,38 +37,37 @@ main = do
    -- No buffering, it messes with the order of output
    mapM_ (flip hSetBuffering NoBuffering) [ stdout, stderr ]
 
-   args <- getArgs
-   serverPort <- case args of
-      []     -> do
+   confMap <- fmap parseToMap $ readFile defaultConfFile
+   serverPort <- case (lookup "httpPort" confMap) of
+      Nothing -> do
          putStrLn $ printf "Using default port %d" defaultPort
          putStrLn "Specify a different port like this: ad-testsrv PORT"
          return defaultPort
-      (p':_) -> return . read $ p'
+      Just s -> return . read $ s
 
-   simpleHTTP (nullConf { port = serverPort }) routing
+   simpleHTTP (nullConf { port = serverPort }) $ routing confMap
 
 
-routing :: ServerPart Response
-routing = msum
-   [ dir "getShowList" $ getShowList
+routing :: ConfMap -> ServerPart Response
+routing confMap = msum
+   [ dir "getShowList" $ getShowList confMap
    , dir "playVideo" $ playVideo
    , dir "delVideo" $ delVideo
    , serveDirectory DisableBrowsing ["index.html"] "site"
    ]
 
 
-getShowList :: ServerPart Response
-getShowList = do
+getShowList :: ConfMap -> ServerPart Response
+getShowList confMap = do
    method GET
 
    liftIO $ putStrLn "Received getShowList request"
 
-   (errMsgs, programs) <- liftIO $ getAllPrograms
-      [ "testsuite/vid/empty"
-      , "testsuite/vid/doesnotexist"
-      , "testsuite/vid/nonempty2"
-      , "testsuite/vid/nonempty1"
-      ]
+   -- FIXME Do this with better error handling
+   let topDirs = splitList . fromJust $ lookup "topLevelDirs" confMap
+   let vidExts = splitList . fromJust $ lookup "videoExtensions" confMap
+
+   (errMsgs, programs) <- liftIO $ getAllPrograms topDirs vidExts
 
    liftIO $ mapM_ putStrLn errMsgs
 
@@ -113,3 +121,7 @@ delVideo = do
          putStrLn "NO PATH! BAD!"
 
    ok $ toResponse ("got it" :: String)
+
+
+splitList :: String -> [String]
+splitList s = splitRegex (mkRegex ";") s
