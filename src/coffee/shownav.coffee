@@ -1,10 +1,27 @@
+loadNavShows = () ->
+   req = $.getJSON '/getShowList', (data) ->
+      createNavShows data
+      sizeContent()
+      ($ window).resize sizeContent
+      document.body.style.visibility = 'visible'
+      ($ '#nav-shows li:first').focus()
+   req.error (resp) -> ($ 'body').html resp.responseText
+
+
+sizeContent = () ->
+   contentHeight = window.innerHeight -
+      ($ '#header').height() -
+      ($ '#footer').height()
+   ($ '#nav-container').height contentHeight
+
+
 createNavShows = (alldata) ->
    ul = $ '#nav-shows'
+   ul.empty()
    ul.append createShowLi showdata for showdata in alldata
    ($ '#nav-shows li' ).attr 'tabindex', (index, attr) -> index
    lidata = _.zip ($ '#nav-shows li'), alldata
    _.map lidata, setShowHandler
-   ($ '#nav-shows li:first').focus()
 
 
 createShowLi = (showdata) ->
@@ -80,7 +97,7 @@ setEpisodeHandler = (t) ->
                   ($ '#nav-episodes li:first').focus()
                else target.next().focus()
             when 46, 68 # delete or'd' key
-               showDeleteDialog epdata
+               showDeleteDialog this, epdata
 
       focusin: (e) ->
          ($ e.currentTarget).addClass 'ui-selected'
@@ -102,20 +119,20 @@ playVideo = (ep) ->
    }
 
 
-showDeleteDialog = (ep) ->
-   $( '#del-confirm-dialog' ).dialog {
+showDeleteDialog = (li, ep) ->
+   ($ '#del-confirm-dialog' ).dialog {
       width: 400
+      modal: true
+      close: () -> ($ li).focus()
       buttons:
          Delete: () ->
-            console.log 'deleting...'
             delEpisode ep
             ($ this).dialog 'close'
 
          Cancel: () ->
-            console.log 'canceling...'
             ($ this).dialog 'close'
    }
-   $( '#del-confirm-dialog' ).dialog 'open'
+   ($ '#del-confirm-dialog' ).dialog 'open'
 
 
 delEpisode = (ep) ->
@@ -125,9 +142,9 @@ delEpisode = (ep) ->
       data: ep.playpath
       dataType: 'text'
       contentType: 'text/plain'
-      #TODO: success: () -> console.log 'success'
+      success: () -> loadNavShows()
    }
 
 
 define
-   createNavShows: createNavShows
+   loadNavShows: loadNavShows
