@@ -12,7 +12,7 @@ homepage:            http://foo/bar/baz.html
 synopsis:            Foo
 description:         Bar Baz
 category:            Unknown
-tested-with:         GHC >= 7.6.1
+tested-with:         GHC >= 7.4.1
 
 executable           livid-srv
    main-is:          livid-srv.hs
