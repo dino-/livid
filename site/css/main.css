@@ -57,6 +57,7 @@ body {
    padding: 0.4em;
    font-size: 1.4em;
    height: 18px;
+   white-space: nowrap;
 }
 
 #del-confirm-dialog {
