@@ -35,7 +35,7 @@ body {
 
 #nav-shows {
    left: 0;
-   right: 50%;
+   right: 66.6%;
    margin-left: 10px;
    margin-right: 5px;
    list-style-type: none;
@@ -43,7 +43,7 @@ body {
 }
 
 #nav-episodes {
-   left: 50%;
+   left: 33.3%;
    right: 0;
    margin-left: 10px;
    margin-right: 10px;
