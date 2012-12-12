@@ -41,7 +41,7 @@ main = do
    -- No buffering, it messes with the order of output
    mapM_ (flip hSetBuffering NoBuffering) [ stdout, stderr ]
 
-   confMap <- fmap parseToMap $ readFile defaultConfFile
+   confMap <- loadConf
    serverPort <- case (lookup "httpPort" confMap) of
       Nothing -> do
          putStrLn $ printf "Using default port %d" defaultPort
@@ -49,17 +49,23 @@ main = do
          return defaultPort
       Just s -> return . read $ s
 
-   simpleHTTP (nullConf { port = serverPort }) $ routing confMap
+   simpleHTTP (nullConf { port = serverPort }) $ routing
 
 
-routing :: ConfMap -> ServerPart Response
-routing confMap = msum
-   [ dir "getShowList" $ getShowList confMap
-   , dir "playVideo" $ playVideo
-   , dir "delVideo" $ delVideo
-   , dir "getVersion" $ getVersion
-   , serveDirectory DisableBrowsing ["index.html"] "site"
-   ]
+routing :: ServerPart Response
+routing = do
+   confMap <- liftIO $ loadConf
+   msum
+      [ dir "getShowList" $ getShowList confMap
+      , dir "playVideo" $ playVideo
+      , dir "delVideo" $ delVideo
+      , dir "getVersion" $ getVersion
+      , serveDirectory DisableBrowsing ["index.html"] "site"
+      ]
+
+
+loadConf :: IO ConfMap
+loadConf = fmap parseToMap $ readFile defaultConfFile
 
 
 getShowList :: ConfMap -> ServerPart Response
