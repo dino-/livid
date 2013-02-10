@@ -1,8 +1,20 @@
-Build it:
+%%
+Getting started
+
+Build the server:
    cabal configure
    cabal build
 
-And run it:
+Build the client:
+   cake build
+
+Start the server:
    ./livid-srv.sh start|stop|restart
 
-And then run things against it, pointed to localhost:8082
+And then use the web application by loading this page:
+   http://localhost:8082
+
+%%
+Changing the version, edit these files:
+   livid-srv.cabal
+   src/hs/livid-srv.coffee
