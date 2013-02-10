@@ -84,7 +84,15 @@ getPrograms vidExts root = runErrorT $ do
    in a Program data structure
 -}
 getProgram :: FilePath -> [String] -> FilePath -> IO Program
-getProgram root vidExts dir = do
+getProgram root vidExts item = do
+   isDir <- doesDirectoryExist $ root </> item
+   if isDir
+      then getProgramDir root vidExts item
+      else getProgramFile root vidExts item
+
+
+getProgramDir :: FilePath -> [String] -> FilePath -> IO Program
+getProgramDir root vidExts dir = do
    epPaths <- liftIO $ contentsWithoutDots $ root </> dir
 
    let filteredEps = filter (\p -> any (p `endsWith`) vidExts) epPaths
@@ -94,6 +102,20 @@ getProgram root vidExts dir = do
 
    let episodes' = map (E.mkEpisode root dir) epsWithDate
    return $ Program dir
+      (sortBy (compare `on` (makeSortable . E.title)) episodes')
+
+
+getProgramFile :: FilePath -> [String] -> FilePath -> IO Program
+getProgramFile root vidExts file = do
+   let epPaths = [file]
+
+   let filteredEps = filter (\p -> any (p `endsWith`) vidExts) epPaths
+
+   -- FIXME get real dates instead of this empty string
+   let epsWithDate = zip filteredEps $ repeat ""
+
+   let episodes' = map (E.mkEpisode root "") epsWithDate
+   return $ Program (dropExtension file)
       (sortBy (compare `on` (makeSortable . E.title)) episodes')
 
 
