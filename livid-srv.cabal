@@ -4,9 +4,10 @@ cabal-version:       >= 1.2
 build-type:          Simple
 license:             BSD3
 license-file:        LICENSE
-copyright:           2012 Dino Morelli
-author:              Dino Morelli
-maintainer:          Dino Morelli <dino@ui3.info>
+copyright:           2013 Dino Morelli, Betty Diegel
+author:              Dino Morelli, Betty Diegel
+maintainer:          Dino Morelli <dino@ui3.info>,
+                     Betty Diegel <bdiegel@usa.net>
 stability:           experimental
 homepage:            http://foo/bar/baz.html
 synopsis:            Foo
