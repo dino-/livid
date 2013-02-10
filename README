@@ -3,6 +3,6 @@ Build it:
    cabal build
 
 And run it:
-   ./dist/build/vidproj-srv | tee vidproj-srv.log
+   ./livid-srv.sh start|stop|restart
 
 And then run things against it, pointed to localhost:8082
