@@ -57,7 +57,7 @@ routing = do
    confMap <- liftIO $ loadConf
    msum
       [ dir "getShowList" $ getShowList confMap
-      , dir "playVideo" $ playVideo
+      , dir "playVideo" $ playVideo confMap
       , dir "delVideo" $ delVideo
       , dir "getVersion" $ getVersion
       , serveDirectory DisableBrowsing ["index.html"] "site"
@@ -92,8 +92,8 @@ bodyPolicy :: BodyPolicy
 bodyPolicy = (defaultBodyPolicy "/tmp/" 0 1000 1000)
 
 
-playVideo :: ServerPart Response
-playVideo = do
+playVideo :: ConfMap -> ServerPart Response
+playVideo confMap = do
    method POST
    decodeBody bodyPolicy
 
@@ -105,7 +105,9 @@ playVideo = do
          let playpath = BL.unpack . unBody $ b
          --printf "path: %s\n" playpath
 
-         _ <- runCommand $ printf "vlc \"%s\"" playpath
+         let playbackCommand =
+               fromJust $ lookup "playbackCommand" confMap
+         _ <- runCommand $ printf "%s \"%s\"" playbackCommand playpath
          return ()
 
       Nothing ->
