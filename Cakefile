@@ -11,16 +11,20 @@ buildDir = 'site/js'
 
 # convenience function to exec shell commands with output
 
-system = (cmd) -> exec cmd, (err, stdout, stderr) ->
-   throw err if err
-   console.log stdout + stderr
+system = (cmd, succFunction) -> exec cmd, (err, stdout, stderr) ->
+   console.log stdout
+   if (err)
+      throw err
+   else
+      succFunction()
 
 
 # build tasks
 
-task 'build', 'Compiles Coffeescript to Javascript', ->
-   system "coffee -o #{buildDir} -c #{srcDir}"
+task 'build', 'Compiles CoffeeScript to JavaScript', ->
+   system "coffee -o #{buildDir} -c #{srcDir}",
+      () -> console.log 'build successful'
 
 
 task 'clean', 'Clean up build artifacts', ->
-   system "rm -rfv #{buildDir}/*"
+   system "rm -rfv #{buildDir}/*", () ->
