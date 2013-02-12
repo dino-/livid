@@ -13,10 +13,8 @@ buildDir = 'site/js'
 
 system = (cmd, succFunction) -> exec cmd, (err, stdout, stderr) ->
    console.log stdout
-   if (err)
-      throw err
-   else
-      succFunction?.call()
+   if err then throw err
+   else succFunction?.call()
 
 
 # build tasks
