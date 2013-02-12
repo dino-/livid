@@ -16,7 +16,7 @@ system = (cmd, succFunction) -> exec cmd, (err, stdout, stderr) ->
    if (err)
       throw err
    else
-      succFunction()
+      succFunction?.call()
 
 
 # build tasks
@@ -27,4 +27,4 @@ task 'build', 'Compiles CoffeeScript to JavaScript', ->
 
 
 task 'clean', 'Clean up build artifacts', ->
-   system "rm -rfv #{buildDir}/*", () ->
+   system "rm -rfv #{buildDir}/*"
