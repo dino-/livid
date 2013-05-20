@@ -1,24 +1,19 @@
 loadNavShows = () ->
    req = $.getJSON '/getShowList', (data) ->
       createNavShows data
+      createNavEpisodes []
       sizeContent()
       ($ window).resize sizeContent
       document.body.style.visibility = 'visible'
-      ($ '#nav-shows li:first')[0].setSelection()
-      $( document ).on  'keydown', navHandler
-      $( document ).on  'click', clickHandler
+      selectFirstShow()
    req.error (resp) -> ($ 'body').html resp.responseText
 
 
-navHandler = (e)  ->
-  console.log e.type
-  sel = getSelection()
-  console.log sel
-  #sel.trigger e.type
-  sel.handleEvent e
-
-clickHandler = (e) ->
-  console.log e.type
+selectFirstShow = () ->
+   first = ($ '#nav-shows .ListBox .ShowItem:first').control()
+   listbox = ($ '#nav-shows .ListBox')
+   listbox.control().selectedControl first
+   listbox.focus()
 
 
 sizeContent = () ->
@@ -28,124 +23,78 @@ sizeContent = () ->
    ($ '#nav-container').height contentHeight
 
 
+class ShowItem extends Control
+   title: (showdata) -> this.content showdata.title
+   episodes: Control.property()
+
+
 createNavShows = (alldata) ->
-   ul = $ '#nav-shows'
-   ul.empty()
-   ul.append createShowLi showdata for showdata in alldata
-   ($ '#nav-shows li' ).attr 'tabindex', (index, attr) -> index
-   lidata = _.zip ($ '#nav-shows li'), alldata
-   _.map lidata, setShowHandler
+   showsdiv = $ '#nav-shows'
+
+   lb = ListBox.create
+      itemClass:  ShowItem
+      items:  alldata
+      mapFunction: "title"
+
+   lb.on "selectionChanged", ->
+      createNavEpisodes lb.selectedItem().episodes
+
+   lb.on "keydown",  (e) ->
+      key = e.keyCode
+
+      switch key
+         when 39 # arrow right 
+            ep = $( '#nav-episodes .ListBox .EpisodeItem:first' ).control()
+            $( '#nav-episodes .ListBox' ).control().selectedControl ep
+            $( '#nav-episodes .ListBox' ).focus()
+
+   showsdiv.append lb
 
 
-createShowLi = (showdata) ->
-   "<li>#{showdata.title}</li>"
+class EpisodeItem extends Control
+   title: (epdata) -> this.content epdata.title
+   playpath: Control.property()
+   date: Control.property()
 
 
 createNavEpisodes = (episodes) ->
-   console.log "createNavEpisodes"
-   console.log episodes
-   ul = $ '#nav-episodes'
-   ul.empty()
-   ul.append createEpisodeLi episode for episode in episodes
-   ($ '#nav-episodes li' ).attr 'tabindex', (index, attr) -> index
-   lidata = _.zip ($ '#nav-episodes li'), episodes
-   _.map lidata, setEpisodeHandler
+   episodesDiv = $ '#nav-episodes'
+   episodesDiv.empty()
 
+   episodesListBox = ListBox.create
+      itemClass: EpisodeItem
+      items: episodes
+      mapFunction: "title"
 
-createEpisodeLi = (epdata) ->
-   "<li>#{epdata.title}</li>"
-
-
-# Key handler for 'show' list navigation
-#
-# t is the tuple: (li, showdata)
-setShowHandler = (t) ->
-   #li = $ t[0]
-   li = t[0]
-   showdata = t[1]
-
-   li.handleEvent = (e) ->
+   episodesListBox.on "keydown",  (e) ->
       key = e.keyCode
-      target = $ this
 
       switch key
-         when 38 # arrow up
-            if target.prev()[0]
-               target.prev()[0].setSelection()
-         when 39 # arrow right 
-            $( '#nav-episodes li:first' ).addClass 'ui-selected'
-         when 40 # arrow down
-            if target.next()[0]
-               target.next()[0].setSelection()
-
-   li.setSelection = () ->
-      ($ '#nav-shows .ui-selected' ).removeClass 'ui-selected'
-      createNavEpisodes showdata.episodes
-      ($ this ).addClass 'ui-selected'
-      
-
-
-getSelection = () ->
-   ep = ($ '#nav-episodes .ui-selected' )
-   if ( ep.length )
-      _.head ep
-   else
-      _.head ($ '#nav-shows .ui-selected' )
-
-
-# Key handler for 'episode' list navigation
-#
-# t is the tuple: (li, epdata)
-setEpisodeHandler = (t) ->
-   #li = $ t[0]
-   li = t[0]
-   epdata = t[1]
-
-   li.handleEvent = (e) ->
-      key = e.keyCode
-      target = $ this
-
-      switch key
-         when 13, 32 # enter or space
-            playVideo epdata
          when 37 # arrow left
-            ($ '#nav-episodes .ui-selected' )[0].removeSelection()
-            ($ '#nav-shows .ui-selected' )[0].setSelection()
-         when 38 # arrow up
-            if ( target.is ($ '#nav-episodes li:first') )
-               ($ '#nav-episodes li:last')[0].setSelection()
-            else target.prev()[0].setSelection()
-
-            target[0].removeSelection()
-         when 40 # arrow down
-            if ( target.is ($ '#nav-episodes li:last') )
-               ($ '#nav-episodes li:first')[0].setSelection()
-            else target.next()[0].setSelection()
-
-            target[0].removeSelection()
+            $( '#nav-episodes .ListBox' ).control().selectedControl null
+            $( '#nav-shows .ListBox' ).focus()
+         when 13, 32 # enter or space
+            playVideo episodesListBox.selectedItem()
          when 46, 68 # delete or'd' key
-            showDeleteDialog this, epdata
+            console.log 'handle delete key'
+            #showDeleteDialog episodesListBox.selectedItem()
+            #showDeleteDialog this, epdata
 
-   li.setSelection = () ->
-      ($ this ).addClass 'ui-selected'
-
-   li.removeSelection = () ->
-      ($ this ).removeClass 'ui-selected'
+   episodesDiv.append episodesListBox
 
 
 playVideo = (ep) ->
-   $.ajax {
+   $.ajax
       url: 'playVideo'
       type: 'POST'
       data: ep.playpath
       dataType: 'text'
       contentType: 'text/plain'
       #TODO: success: () -> console.log 'success'
-   }
 
 
 showDeleteDialog = (li, ep) ->
-   ($ '#del-confirm-dialog' ).dialog {
+   ($ '#del-confirm-dialog' ).dialog
       width: 400
       modal: true
       close: () -> ($ li).focus()
@@ -156,19 +105,18 @@ showDeleteDialog = (li, ep) ->
 
          Cancel: () ->
             ($ this).dialog 'close'
-   }
+
    ($ '#del-confirm-dialog' ).dialog 'open'
 
 
 delEpisode = (ep) ->
-   $.ajax {
+   $.ajax
       url: 'delVideo'
       type: 'POST'
       data: ep.playpath
       dataType: 'text'
       contentType: 'text/plain'
       success: () -> loadNavShows()
-   }
 
 
 define
