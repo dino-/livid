@@ -46,8 +46,9 @@ createNavShows = (alldata) ->
       switch key
          when 39 # arrow right 
             ep = $( '#nav-episodes .ListBox .EpisodeItem:first' ).control()
-            $( '#nav-episodes .ListBox' ).control().selectedControl ep
-            $( '#nav-episodes .ListBox' ).focus()
+            listbox = $( '#nav-episodes .ListBox' )
+            listbox.control().selectedControl ep
+            listbox.focus()
 
    showsdiv.append lb
 
