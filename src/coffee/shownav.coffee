@@ -30,6 +30,7 @@ class ShowItem extends Control
 
 createNavShows = (alldata) ->
    showsdiv = $ '#nav-shows'
+   showsdiv.empty()
 
    lb = ListBox.create
       itemClass:  ShowItem
@@ -75,10 +76,8 @@ createNavEpisodes = (episodes) ->
             $( '#nav-shows .ListBox' ).focus()
          when 13, 32 # enter or space
             playVideo episodesListBox.selectedItem()
-         when 46, 68 # delete or'd' key
-            console.log 'handle delete key'
-            #showDeleteDialog episodesListBox.selectedItem()
-            #showDeleteDialog this, epdata
+         when 46, 68 # delete or 'd' key
+            showDeleteDialog episodesListBox.selectedItem()
 
    episodesDiv.append episodesListBox
 
@@ -93,20 +92,42 @@ playVideo = (ep) ->
       #TODO: success: () -> console.log 'success'
 
 
-showDeleteDialog = (li, ep) ->
-   ($ '#del-confirm-dialog' ).dialog
-      width: 400
-      modal: true
-      close: () -> ($ li).focus()
-      buttons:
-         Delete: () ->
+showDeleteDialog = (ep) ->
+   DelConfDialog = Dialog.sub
+      className: "DelConfDialog"
+      inherited:
+         content:
+            [ "<h2>Confirm delete</h2>"
+            , "<p>This item will be permanently deleted and cannot be recovered. Are you sure?</p>"
+            , { control: BasicButton
+              , ref: "buttonCancel"
+              , content: "Cancel"
+              , css: { "margin-top": "1em" }
+              }
+            , { control: BasicButton
+              , ref: "buttonDelete"
+              , content: "Delete"
+              , css: { "margin-top": "1em", "margin-left": "0.5em", "border": "2px solid black" }
+              }
+            , css: { "align": "right" }
+            ]
+         width: "400px"
+
+      initialize: ->
+         self = this
+
+         this.$buttonCancel().click -> self.cancel()
+
+         this.$buttonDelete().click ->
             delEpisode ep
-            ($ this).dialog 'close'
+            self.close()
 
-         Cancel: () ->
-            ($ this).dialog 'close'
+      cancel: ->
+         @close()
+         $( '#nav-episodes .ListBox' ).focus()
 
-   ($ '#del-confirm-dialog' ).dialog 'open'
+   Dialog.showDialog DelConfDialog
+   ($ '.buttonDelete').focus()
 
 
 delEpisode = (ep) ->
