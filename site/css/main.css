@@ -4,10 +4,6 @@
    font-family: sans-serif;
 }
 
-body {
-   visibility: hidden;
-}
-
 #header {
    height: 50px;
    margin: 0 7px 0 7px;
@@ -40,15 +36,4 @@ body {
    height: 100%;
    margin-left: 10px;
    margin-right: 10px;
-}
-
-#del-confirm-dialog {
-   display: none;
-   width: 500px;
-}
-
-.modal-dialog {
-   float: left;
-   margin: 0 7px 20px 0;
-   width: 500px;
 }
