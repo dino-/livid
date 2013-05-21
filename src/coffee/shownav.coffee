@@ -33,14 +33,14 @@ createNavShows = (alldata) ->
    showsdiv.empty()
 
    lb = ListBox.create
-      itemClass:  ShowItem
-      items:  alldata
+      itemClass: ShowItem
+      items: alldata
       mapFunction: "title"
 
    lb.on "selectionChanged", ->
       createNavEpisodes lb.selectedItem().episodes
 
-   lb.on "keydown",  (e) ->
+   lb.on "keydown", (e) ->
       key = e.keyCode
 
       switch key
@@ -68,7 +68,7 @@ createNavEpisodes = (episodes) ->
       items: episodes
       mapFunction: "title"
 
-   episodesListBox.on "keydown",  (e) ->
+   episodesListBox.on "keydown", (e) ->
       key = e.keyCode
 
       switch key
