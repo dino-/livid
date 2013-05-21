@@ -1,4 +1,4 @@
-loadNavShows = () ->
+loadNavShows = ->
    req = $.getJSON '/getShowList', (data) ->
       createNavShows data
       createNavEpisodes []
@@ -9,14 +9,14 @@ loadNavShows = () ->
    req.error (resp) -> ($ 'body').html resp.responseText
 
 
-selectFirstShow = () ->
+selectFirstShow = ->
    first = ($ '#nav-shows .ListBox .ShowItem:first').control()
    listbox = ($ '#nav-shows .ListBox')
    listbox.control().selectedControl first
    listbox.focus()
 
 
-sizeContent = () ->
+sizeContent = ->
    contentHeight = window.innerHeight -
       ($ '#header').height() -
       ($ '#footer').height()
@@ -89,7 +89,7 @@ playVideo = (ep) ->
       data: ep.playpath
       dataType: 'text'
       contentType: 'text/plain'
-      #TODO: success: () -> console.log 'success'
+      #TODO: success: -> console.log 'success'
 
 
 showDeleteDialog = (ep) ->
@@ -137,7 +137,7 @@ delEpisode = (ep) ->
       data: ep.playpath
       dataType: 'text'
       contentType: 'text/plain'
-      success: () -> loadNavShows()
+      success: -> loadNavShows()
 
 
 define
