@@ -1,7 +1,7 @@
 %%
 Getting started
 
-Build the server:
+Build the server (or use cabal-dev, if you prefer):
    cabal configure
    cabal build
 
