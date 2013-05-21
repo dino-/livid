@@ -17,6 +17,7 @@
 #nav-container {
    position: relative;
    width: 100%;
+   margin-bottom: 7px;
 }
 
 #nav-shows {

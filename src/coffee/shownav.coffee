@@ -19,7 +19,7 @@ selectFirstShow = ->
 sizeContent = ->
    contentHeight = window.innerHeight -
       ($ '#header').height() -
-      ($ '#footer').height()
+      ($ '#footer').height() - 7
    ($ '#nav-container').height contentHeight
 
 
