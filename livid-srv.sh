@@ -30,11 +30,11 @@ binary=`basename $binFullPath`
 
 case "$1" in
    start|restart)
-      killall $binary
+      killall -q $binary
       $binFullPath &
       ;;
    stop)
-      killall $binary
+      killall -q $binary
       ;;
    *) usage ;;
 esac
