@@ -8,6 +8,9 @@ function usage {
    cat <<USAGE
 $basename - Control livid server
 
+This script tries to make sure only one instance of the livid server
+binary is running at any time, without using a pid or lockfile.
+
 usage:
    $basename [OPTIONS] COMMAND
 
