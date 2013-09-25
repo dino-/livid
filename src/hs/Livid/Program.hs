@@ -8,6 +8,7 @@ module Livid.Program
 where
 
 import Control.Monad.Error
+import Data.Char ( toLower )
 import Data.Either ( partitionEithers )
 import Data.Function ( on )
 import Data.Aeson ( FromJSON, ToJSON )
@@ -122,7 +123,8 @@ getProgramFile root vidExts file = do
 makeSortable :: String -> String
 makeSortable s = foldl (flip id) s modifiers where
    modifiers =
-      [ \s' -> subRegex (mkRegex "^[Tt]he[ ._-]") s' ""
+      [ map toLower
+      , \s' -> subRegex (mkRegex "^the[ ._-]") s' ""
       ]
 
 
