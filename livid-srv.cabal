@@ -27,8 +27,10 @@ executable           livid-srv
                      ghc-prim,
                      happstack-server,
                      mtl,
+                     old-locale,
                      process,
                      regex-compat,
+                     time,
                      transformers,
                      unix
    ghc-options:      -Wall -threaded

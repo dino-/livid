@@ -68,6 +68,15 @@ createNavEpisodes = (episodes) ->
       items: episodes
       mapFunction: "title"
 
+   episodesListBox.on "selectionChanged", ->
+      sel = episodesListBox.selectedItem()
+      contents =
+         if sel then "Episode acquired: #{sel.date}" else ""
+
+      d = ($ '#date')
+      d.empty()
+      d.append contents
+
    episodesListBox.on "keydown", (e) ->
       key = e.keyCode
 
