@@ -3,7 +3,8 @@
 module Livid.Episode where
 
 import Data.Aeson.Types
-import Data.Time ( ZonedTime, formatTime, utcToLocalZonedTime )
+import Data.Time ( ZonedTime, formatTime, utcToLocalZonedTime,
+   zonedTimeToUTC )
 import GHC.Generics ( Generic )
 import System.Directory ( getModificationTime )
 import System.FilePath
@@ -25,6 +26,18 @@ instance ToJSON Episode where
       , "date"     .= formatTime defaultTimeLocale "%c" d
       , "playpath" .= p
       ]
+
+instance Eq Episode where
+   x == y = ux == uy
+      where
+         ux = zonedTimeToUTC . date $ x
+         uy = zonedTimeToUTC . date $ y
+
+instance Ord Episode where
+   x <= y = ux <= uy
+      where
+         ux = zonedTimeToUTC . date $ x
+         uy = zonedTimeToUTC . date $ y
 
 
 -- Construct an episode

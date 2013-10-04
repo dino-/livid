@@ -61,8 +61,10 @@ getAllPrograms topDirs vidExts = do
    let ps = sortBy (compare `on` (makeSortable . title))
          $ concat llps
 
+   let allEpsProgram = mkAllEpsProgram ps
+
    -- Send it all back as a tuple
-   return (errors, Programs ps)
+   return (errors, Programs (allEpsProgram : ps))
 
 
 {- Get all programs and their episodes given a root directory. Data
@@ -124,3 +126,11 @@ makeSortable s = foldl (flip id) s modifiers where
 
 endsWith :: Eq a => [a] -> [a] -> Bool
 long `endsWith` short = (reverse short) `isPrefixOf` (reverse long)
+
+
+mkAllEpsProgram :: [Program] -> Program
+mkAllEpsProgram programs =
+   Program "all episodes, newest first" $ sort eps
+
+   where
+      eps = concatMap episodes programs
