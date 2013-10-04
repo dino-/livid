@@ -97,11 +97,10 @@ getProgramDir root vidExts dir = do
    epPaths <- liftIO $ contentsWithoutDots $ root </> dir
 
    let filteredEps = filter (\p -> any (p `endsWith`) vidExts) epPaths
-   let episodes' = map (E.mkEpisode root dir) filteredEps
-   epsWithDate <- E.fillDates episodes'
+   episodes' <- mapM (E.mkEpisode root dir) filteredEps
 
    return $ Program dir
-      (sortBy (compare `on` (makeSortable . E.title)) epsWithDate)
+      (sortBy (compare `on` (makeSortable . E.title)) episodes')
 
 
 getProgramFile :: FilePath -> [String] -> FilePath -> IO Program
@@ -109,11 +108,10 @@ getProgramFile root vidExts file = do
    let epPaths = [file]
 
    let filteredEps = filter (\p -> any (p `endsWith`) vidExts) epPaths
-   let episodes' = map (E.mkEpisode root "") filteredEps
-   epsWithDate <- E.fillDates episodes'
+   episodes' <- mapM (E.mkEpisode root "") filteredEps
 
    return $ Program (dropExtension file)
-      (sortBy (compare `on` (makeSortable . E.title)) epsWithDate)
+      (sortBy (compare `on` (makeSortable . E.title)) episodes')
 
 
 makeSortable :: String -> String
