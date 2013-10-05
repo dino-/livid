@@ -24,7 +24,8 @@ instance FromJSON Episode
 instance ToJSON Episode where
    toJSON (Episode t d p) = object
       [ "title"    .= t
-      , "date"     .= formatTime defaultTimeLocale "%c" d
+      , "date"     .= formatTime defaultTimeLocale
+            "%A, %B %e, %Y at %l:%M:%S %p" d
       , "playpath" .= p
       ]
 
