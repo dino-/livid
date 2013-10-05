@@ -130,7 +130,7 @@ long `endsWith` short = (reverse short) `isPrefixOf` (reverse long)
 
 mkAllEpsProgram :: [Program] -> Program
 mkAllEpsProgram programs =
-   Program "all episodes, newest first" $ sort eps
+   Program "all programs, newest first" $ reverse . sort $ eps
 
    where
       eps = concatMap episodes programs
