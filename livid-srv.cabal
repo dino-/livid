@@ -31,6 +31,7 @@ executable           livid-srv
                      process,
                      regex-compat,
                      time,
+                     time-compat,
                      transformers,
                      unix
    ghc-options:      -Wall -threaded
