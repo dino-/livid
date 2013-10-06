@@ -11,6 +11,7 @@ body {
 #header {
    height: 50px;
    margin: 0 7px 0 7px;
+   color: #4643a6;
 }
 
 #version {
@@ -21,6 +22,18 @@ body {
 #footer {
    height: 35px;
    margin: 0 7px 0 7px;
+}
+
+.ListBox.generic {
+   height: 100%;
+   outline: none;
+   background-color: #ffe9c4;
+   border-style: none;
+}
+
+.ListBox.highlightSelection > .selected {
+  background: #a4a3bf;
+  color: highlighttext;
 }
 
 #nav-container {
@@ -35,11 +48,6 @@ body {
    height: 100%;
    margin-left: 10px;
    margin-right: 5px;
-}
-
-.ListBox {
-   height: 100%;
-   outline: none;
 }
 
 #nav-episodes {
