@@ -9,6 +9,15 @@ loadNavShows = ->
    req.error (resp) -> ($ 'body').html resp.responseText
 
 
+setDate = (contents) ->
+   d = ($ '#date')
+   d.empty()
+   d.append contents
+
+
+clearDate = -> setDate ""
+
+
 selectFirstShow = ->
    first = ($ '#nav-shows .ListBox .ShowItem:first').control()
    listbox = ($ '#nav-shows .ListBox')
@@ -39,6 +48,7 @@ createNavShows = (alldata) ->
 
    lb.on "selectionChanged", ->
       createNavEpisodes lb.selectedItem().episodes
+      clearDate()
 
    lb.on "keydown", (e) ->
       key = e.keyCode
@@ -70,12 +80,10 @@ createNavEpisodes = (episodes) ->
 
    episodesListBox.on "selectionChanged", ->
       sel = episodesListBox.selectedItem()
-      contents =
-         if sel then "Episode acquired: #{sel.date}" else ""
-
-      d = ($ '#date')
-      d.empty()
-      d.append contents
+      if sel
+         setDate "Episode acquired: #{sel.date}"
+      else
+         clearDate()
 
    episodesListBox.on "keydown", (e) ->
       key = e.keyCode
