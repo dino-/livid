@@ -10,7 +10,7 @@ maintainer:          Dino Morelli <dino@ui3.info>,
                      Betty Diegel <bdiegel@usa.net>
 stability:           experimental
 homepage:            http://foo/bar/baz.html
-synopsis:            Foo
+synopsis:            Video media browse/playback web application
 description:         Bar Baz
 category:            Unknown
 tested-with:         GHC >= 7.4.1
