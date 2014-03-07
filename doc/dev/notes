@@ -1,0 +1,4 @@
+%%
+Changing the version, edit these files:
+   livid-srv.cabal
+   src/hs/livid-srv.coffee

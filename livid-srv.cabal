@@ -10,9 +10,9 @@ maintainer:          Dino Morelli <dino@ui3.info>,
                      Betty Diegel <bdiegel@usa.net>
 stability:           experimental
 homepage:            http://foo/bar/baz.html
-synopsis:            Video media browse/playback web application
-description:         Bar Baz
-category:            Unknown
+synopsis:            LIst of VIDeos media browse/playback web app (Haskell, Coffeescript)
+description:         livid is a web application for browsing a directory tree of video files, launching playback and later deleting those files if desired. It's designed to be run locally on a system from within a gui environment so it can launch a video player application (like vlc, for example).
+category:            Application, Multimedia Player
 tested-with:         GHC >= 7.4.1
 
 executable           livid-srv
