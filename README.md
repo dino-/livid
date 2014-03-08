@@ -8,7 +8,7 @@ LIst of VIDeos media browse/playback web app (Haskell, Coffeescript)
 
 livid is a web application for browsing a directory tree of video files, launching playback and later deleting those files if desired. It's designed to be run locally on a system from within a gui environment so it can launch a video player application (like vlc, for example).
 
-This client side of this application has a vaguely-RESTful interface to its server and utilizes single-page design.
+This application uses a vaguely-RESTful interface between the client and server. The client is a single-page design, with data encoded in JSON.
 
 ## Getting source
 
@@ -37,7 +37,7 @@ And then load the client in your browser:
 
     http://localhost:8082
 
-In the client UI, navigate with the mouse or arrow keys, press Enter to play a video and Del or d to delete a file.
+In the client UI, navigate with the mouse or arrow keys, press `Enter` to play a video and `Del` or `d` to delete a file.
 
 Various configuration options can be adjusted in the file `livid.conf` such as HTTP port, directories to scan for files as well as file types and video playback command.
 
