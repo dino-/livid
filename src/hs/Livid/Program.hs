@@ -119,8 +119,8 @@ getProgramFile root vidExts file = do
 makeSortable :: String -> String
 makeSortable s = foldl (flip id) s modifiers where
    modifiers =
-      [ map toLower
-      , \s' -> subRegex (mkRegex "^the[ ._-]") s' ""
+      [ \s' -> subRegex (mkRegex "^[tT]he[A-Z ._-]") s' ""
+      , map toLower
       ]
 
 
