@@ -23,9 +23,9 @@ in JSON.
 
 Get the source with darcs:
 
->     $ darcs get http://ui3.info/darcs/livid
+>     $ darcs get http://hub.darcs.net/dino/livid
 
-Or [browse the source](http://ui3.info/darcs/livid)
+Or [browse the source](http://hub.darcs.net/dino/livid)
 
 
 ## Installing
