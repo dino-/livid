@@ -23,7 +23,7 @@ in JSON.
 
 Get the source with darcs:
 
->     $ darcs get http://hub.darcs.net/dino/livid
+    $ darcs get http://hub.darcs.net/dino/livid
 
 Or [browse the source](http://hub.darcs.net/dino/livid)
 
@@ -32,20 +32,20 @@ Or [browse the source](http://hub.darcs.net/dino/livid)
 
 The server is written in Haskell. To build it:
 
->     $ cabal configure
->     $ cabal build
+    $ cabal configure
+    $ cabal build
 
 The client is written in Coffeescript. To build it:
 
->     $ cake build
+    $ cake build
 
 Upon successful compilation, you can start the server:
 
->     $ ./livid-srv.sh start|stop|restart
+    $ ./livid-srv.sh start|stop|restart
 
 And then load the client in your browser:
 
->     http://localhost:8082
+    http://localhost:8082
 
 In the client UI, navigate with the mouse or arrow keys, press
 `Enter` to play a video and `Del` or `d` to delete a file.
