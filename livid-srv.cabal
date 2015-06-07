@@ -9,8 +9,8 @@ author:              Dino Morelli, Betty Diegel
 maintainer:          Dino Morelli <dino@ui3.info>,
                      Betty Diegel <bdiegel@usa.net>
 stability:           experimental
-homepage:            http://foo/bar/baz.html
-synopsis:            LIst of VIDeos media browse/playback web app (Haskell, Coffeescript)
+homepage:            http://hub.darcs.net/dino/livid
+synopsis:            LIst of VIDeos media browse/playback web app
 description:         livid is a web application for browsing a directory tree of video files, launching playback and later deleting those files if desired. It's designed to be run locally on a system from within a gui environment so it can launch a video player application (like vlc, for example).
 category:            Application, Multimedia Player
 tested-with:         GHC >= 7.4.1
