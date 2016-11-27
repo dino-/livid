@@ -32,8 +32,7 @@ Or [browse the source](http://hub.darcs.net/dino/livid)
 
 The server is written in Haskell. To build it:
 
-    $ cabal configure
-    $ cabal build
+    $ stack build
 
 The client is written in Coffeescript. To build it:
 

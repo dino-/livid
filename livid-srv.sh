@@ -28,13 +28,12 @@ USAGE
 }
 
 
-binFullPath="dist/build/livid-srv/livid-srv"
-binary=`basename $binFullPath`
+binary=livid-srv
 
 case "$1" in
    start|restart)
       killall -q $binary
-      $binFullPath &
+      stack exec $binary &
       ;;
    stop)
       killall -q $binary

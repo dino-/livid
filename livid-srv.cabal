@@ -1,6 +1,6 @@
 name:                livid-srv
 version:             1.6
-cabal-version:       >= 1.2
+cabal-version:       >= 1.10
 build-type:          Simple
 license:             BSD3
 license-file:        LICENSE
@@ -13,7 +13,7 @@ homepage:            http://hub.darcs.net/dino/livid
 synopsis:            LIst of VIDeos media browse/playback web app
 description:         livid is a web application for browsing a directory tree of video files, launching playback and later deleting those files if desired. It's designed to be run locally on a system from within a gui environment so it can launch a video player application (like vlc, for example).
 category:            Application, Multimedia Player
-tested-with:         GHC >= 7.4.1
+tested-with:         GHC >= 8.0.1
 
 source-repository    head
    type:             darcs
@@ -31,11 +31,13 @@ executable           livid-srv
                      ghc-prim,
                      happstack-server,
                      mtl,
-                     old-locale,
                      process,
                      regex-compat,
                      time,
-                     time-compat,
                      transformers,
                      unix
    ghc-options:      -Wall -threaded
+   default-language: Haskell2010
+   other-modules:    Livid.Conf
+                     Livid.Episode
+                     Livid.Program

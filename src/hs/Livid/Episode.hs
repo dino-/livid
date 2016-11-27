@@ -5,11 +5,10 @@ module Livid.Episode where
 import Data.Aeson.Types
 import Data.Time ( ZonedTime, formatTime, utcToLocalZonedTime,
    zonedTimeToUTC )
-import Data.Time.Compat ( toUTCTime )
+import Data.Time.Format ( defaultTimeLocale )
 import GHC.Generics ( Generic )
 import System.Directory ( getModificationTime )
 import System.FilePath
-import System.Locale ( defaultTimeLocale )
 
 
 data Episode = Episode
@@ -46,6 +45,6 @@ instance Ord Episode where
 mkEpisode :: FilePath -> FilePath -> FilePath -> IO Episode
 mkEpisode root progDir epFile = do
    let playpath' = root </> progDir </> epFile
-   localt <- toUTCTime `fmap` getModificationTime playpath'
+   localt <- getModificationTime playpath'
       >>= utcToLocalZonedTime
    return $ Episode epFile localt playpath'
