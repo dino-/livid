@@ -25,7 +25,7 @@ import Livid.Program
 
 
 version :: String
-version = "1.5"
+version = "1.6"
 
 
 defaultPort :: Int
