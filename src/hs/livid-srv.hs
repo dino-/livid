@@ -9,10 +9,12 @@ import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson ( encode )
 import qualified Data.ByteString.Lazy.Char8 as BL
+import Data.Version ( showVersion )
 import Data.Map
 -- FIXME
 import Data.Maybe ( fromJust )
 import Happstack.Server
+import Paths_livid_srv ( version )
 import Prelude hiding ( lookup )
 import System.IO
    ( BufferMode ( NoBuffering )
@@ -25,10 +27,6 @@ import Text.Regex ( mkRegex, splitRegex )
 
 import Livid.Conf
 import Livid.Program
-
-
-version :: String
-version = "1.6"
 
 
 defaultPort :: Int
@@ -147,4 +145,4 @@ getVersion :: ServerPart Response
 getVersion = do
    method GET
 
-   ok $ toResponse (version :: String)
+   ok . toResponse . showVersion $ version
