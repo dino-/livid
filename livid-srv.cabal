@@ -2,7 +2,7 @@ name:                livid-srv
 version:             1.6
 cabal-version:       >= 1.10
 build-type:          Simple
-license:             BSD3
+license:             ISC
 license-file:        LICENSE
 copyright:           2012-2016 Dino Morelli, Betty Diegel
 author:              Dino Morelli, Betty Diegel
