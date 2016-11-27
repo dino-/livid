@@ -1,3 +1,6 @@
+-- License: BSD3 (see LICENSE)
+-- Author: Dino Morelli <dino@ui3.info>
+
 {-# LANGUAGE DeriveGeneric #-}
 
 module Livid.Program
