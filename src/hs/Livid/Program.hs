@@ -10,7 +10,7 @@ module Livid.Program
    )
 where
 
-import Control.Monad.Error
+import Control.Monad.Except
 import Data.Char ( toLower )
 import Data.Either ( partitionEithers )
 import Data.Function ( on )
@@ -74,7 +74,7 @@ getAllPrograms topDirs vidExts = do
    is contained in a list of Program data structures
 -}
 getPrograms :: [String] -> FilePath -> IO (Either String [Program])
-getPrograms vidExts root = runErrorT $ do
+getPrograms vidExts root = runExceptT $ do
    topExists <- liftIO $ doesDirectoryExist root
    unless topExists $ throwError $
       printf "Directory %s does not exist!" root
