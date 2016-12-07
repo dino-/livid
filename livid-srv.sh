@@ -33,7 +33,7 @@ binary=livid-srv
 case "$1" in
    start|restart)
       killall -q $binary
-      stack exec $binary &
+      nohup stack exec $binary 2>&1 >> livid-srv.log &
       ;;
    stop)
       killall -q $binary
