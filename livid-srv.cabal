@@ -16,8 +16,8 @@ category:            Application, Multimedia Player
 tested-with:         GHC >= 8.0.1
 
 source-repository    head
-   type:             darcs
-   location:         http://hub.darcs.net/dino/livid
+   type:             git
+   location:         https://github.com/dino-/livid.git
 
 executable           livid-srv
    main-is:          livid-srv.hs

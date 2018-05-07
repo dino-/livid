@@ -23,9 +23,9 @@ in JSON.
 
 Get the source with darcs:
 
-    $ darcs get http://hub.darcs.net/dino/livid
+    $ git clone https://github.com/dino-/livid.git
 
-Or [browse the source](http://hub.darcs.net/dino/livid)
+Or [browse the source](https://github.com/dino-/livid)
 
 
 ## Installing
