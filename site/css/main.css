@@ -8,6 +8,10 @@ body {
    font-size: 1.3em;
 }
 
+main {
+   overflow: hidden;
+}
+
 #header {
    height: 50px;
    margin: 0 7px 0 7px;
@@ -31,7 +35,7 @@ body {
    border-style: none;
 }
 
-.ListBox.highlightSelection > .selected {
+.mdl-list .selected {
   background: #a4a3bf;
   color: highlighttext;
 }
@@ -48,10 +52,22 @@ body {
    height: 100%;
    margin-left: 10px;
    margin-right: 5px;
+   overflow-y: auto;
 }
+
+/*
+#nav-shows ul {
+}
+*/
 
 #nav-episodes {
    height: 100%;
    margin-left: 10px;
    margin-right: 10px;
+   overflow-y: auto;
 }
+
+/*
+#nav-episodes ul {
+}
+*/

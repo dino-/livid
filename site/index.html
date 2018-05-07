@@ -6,19 +6,48 @@
 
     <title>LiVid</title>
 
-    <script type="text/javascript" src="lib/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="lib/underscore-min.js"></script>
-    <script type="text/javascript" src="lib/quickui-0.9.4.js"></script>
-    <script type="text/javascript" src="lib/quickui.catalog-0.9.4.0.js"></script>
+    <script type="text/javascript" src="lib/material.min.js"></script>
 
     <script data-main="js/main" src="lib/require.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/quickui.catalog-0.9.4.0.css">
+    <link rel="stylesheet" type="text/css" href="lib/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
-<body>
+<body class="noScroll">
 
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">LiVid</span>
+      <!-- Add spacer, to align navigation to the right -->
+      <div class="mdl-layout-spacer"></div>
+      <div id="date"></div>
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">LiVid</span>
+    <nav class="mdl-navigation">
+      <div id="version" class="mdl-navigation__link">version: </div>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div id="nav-container">
+      <div id="nav-shows"></div>
+      <div id="nav-episodes"></div>
+    </div>
+  </main>
+
+<!--
+</div>
    <div id="header">
       <div id="version">version: </div>
       <h2>LiVid</h2>
@@ -30,6 +59,7 @@
    <div id="footer">
       <div id="date"></div>
    </div>
+-->
 
 </body>
 </html>
