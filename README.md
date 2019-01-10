@@ -28,7 +28,13 @@ Get the source with darcs:
 Or [browse the source](https://github.com/dino-/livid)
 
 
-## Installing
+## Building and starting the server
+
+You may need to install some things:
+
+- The [Haskell stack build utility](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
+- CoffeeScript's [cake build utility](https://coffeescript.org/#installation)
+
 
 The server is written in Haskell. To build it:
 
@@ -38,7 +44,8 @@ The client is written in Coffeescript. To build it:
 
     $ cake build
 
-Upon successful compilation, you can start the server:
+Upon successful compilation, you can start, stop or restart the server with a
+supplied script:
 
     $ ./livid-srv.sh start|stop|restart
 
