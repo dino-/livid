@@ -2,6 +2,7 @@
 
 
 basename=`basename $0`
+deploymentDir=$(dirname $0)
 
 
 function usage {
@@ -29,6 +30,7 @@ USAGE
 
 
 binary=livid-srv
+cd $deploymentDir
 
 case "$1" in
    start|restart)
