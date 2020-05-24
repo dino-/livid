@@ -8,7 +8,7 @@ module Main where
 import Control.Monad
 import Control.Monad.IO.Class
 import Data.Aeson ( encode )
-import qualified Data.ByteString.Lazy.Char8 as BL
+import qualified Data.ByteString.Lazy.UTF8 as BL
 import Data.Version ( showVersion )
 import Data.Map
 -- FIXME
@@ -98,7 +98,7 @@ getShowList confMap = do
   liftIO $ mapM_ (errorM lname) errMsgs
 
   let json = encode (programs :: Programs)
-  liftIO $ debugM lname $ BL.unpack json
+  liftIO $ debugM lname $ BL.toString json
 
   ok $ toResponse (json :: BL.ByteString)
 
@@ -117,7 +117,7 @@ playVideo confMap = do
   mbBody <- takeRequestBody =<< askRq
   liftIO $ case mbBody of
     Just b -> do
-      let playpath = BL.unpack . unBody $ b
+      let playpath = BL.toString . unBody $ b
       infoM lname $ printf "Playing path: %s\n" playpath
 
       let playbackCommand =
@@ -141,7 +141,7 @@ delVideo = do
   mbBody <- takeRequestBody =<< askRq
   liftIO $ case mbBody of
     Just b -> do
-      let playpath = BL.unpack . unBody $ b
+      let playpath = BL.toString . unBody $ b
       infoM lname $ printf "Deleting path: %s\n" playpath
       removeLink playpath
 

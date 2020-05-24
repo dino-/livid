@@ -24,7 +24,6 @@ executable           livid-srv
    hs-source-dirs:   src/hs
    build-depends:    aeson,
                      base >= 3 && < 5,
-                     bytestring,
                      containers,
                      directory,
                      filepath,
@@ -37,7 +36,8 @@ executable           livid-srv
                      safe,
                      time,
                      transformers,
-                     unix
+                     unix,
+                     utf8-string
    ghc-options:      -Wall -threaded
    default-language: Haskell2010
    other-modules:    Livid.Conf
