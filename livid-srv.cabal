@@ -30,9 +30,11 @@ executable           livid-srv
                      filepath,
                      ghc-prim,
                      happstack-server,
+                     hslogger,
                      mtl,
                      process,
                      regex-compat,
+                     safe,
                      time,
                      transformers,
                      unix
@@ -40,4 +42,5 @@ executable           livid-srv
    default-language: Haskell2010
    other-modules:    Livid.Conf
                      Livid.Episode
+                     Livid.Log
                      Livid.Program

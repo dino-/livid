@@ -25,12 +25,18 @@ import System.Process ( runCommand )
 import Text.Printf
 import Text.Regex ( mkRegex, splitRegex )
 
-import Livid.Conf
+import Livid.Conf ( ConfMap, lookupReadWithDefault, parseToMap )
+import Livid.Log ( debugM, errorM, infoM, initLogging, lname, noticeM,
+  Priority (NOTICE), setLevel )
 import Livid.Program
 
 
-defaultPort :: Int
-defaultPort = 8082
+defaultLogPriority :: Priority
+defaultLogPriority = NOTICE
+
+
+defaultHttpPort :: Int
+defaultHttpPort = 8082
 
 
 defaultConfFile :: FilePath
@@ -43,19 +49,23 @@ main = do
   mapM_ (flip hSetBuffering NoBuffering) [ stdout, stderr ]
 
   confMap <- loadConf
-  serverPort <- case (lookup "httpPort" confMap) of
-    Nothing -> do
-      putStrLn $ printf "Using default port %d" defaultPort
-      putStrLn "Specify a different port like this: ad-testsrv PORT"
-      return defaultPort
-    Just s -> return . read $ s
 
-  simpleHTTP (nullConf { port = serverPort }) $ routing
+  let logPriority = readLogPriority confMap
+  initLogging logPriority
+  noticeM lname $ printf "Logging started with priority %s" (show logPriority)
+
+  let httpPort = lookupReadWithDefault Nothing "httpPort" confMap
+  noticeM lname $ printf "Starting server on port %d" httpPort
+
+  simpleHTTP (nullConf { port = httpPort }) $ routing
 
 
 routing :: ServerPart Response
 routing = do
   confMap <- liftIO $ loadConf
+
+  liftIO $ setLevel . readLogPriority $ confMap
+
   msum
     [ dir "getShowList" $ getShowList confMap
     , dir "playVideo" $ playVideo confMap
@@ -69,11 +79,15 @@ loadConf :: IO ConfMap
 loadConf = fmap parseToMap $ readFile defaultConfFile
 
 
+readLogPriority :: ConfMap -> Priority
+readLogPriority confMap = lookupReadWithDefault (Just defaultLogPriority) "logPriority" confMap
+
+
 getShowList :: ConfMap -> ServerPart Response
 getShowList confMap = do
   method GET
 
-  liftIO $ putStrLn "Received getShowList request"
+  liftIO $ noticeM lname "Received getShowList request"
 
    -- FIXME Do this with better error handling
   let topDirs = splitList . fromJust $ lookup "topLevelDirs" confMap
@@ -81,10 +95,10 @@ getShowList confMap = do
 
   (errMsgs, programs) <- liftIO $ getAllPrograms topDirs vidExts
 
-  liftIO $ mapM_ putStrLn errMsgs
+  liftIO $ mapM_ (errorM lname) errMsgs
 
   let json = encode (programs :: Programs)
-  --liftIO $ BL.putStrLn json
+  liftIO $ debugM lname $ BL.unpack json
 
   ok $ toResponse (json :: BL.ByteString)
 
@@ -98,13 +112,13 @@ playVideo confMap = do
   method POST
   decodeBody bodyPolicy
 
-  liftIO $ putStrLn "Received playVideo request"
+  liftIO $ noticeM lname "Received playVideo request"
 
   mbBody <- takeRequestBody =<< askRq
   liftIO $ case mbBody of
     Just b -> do
       let playpath = BL.unpack . unBody $ b
-      --printf "path: %s\n" playpath
+      infoM lname $ printf "Playing path: %s\n" playpath
 
       let playbackCommand =
                fromJust $ lookup "playbackCommand" confMap
@@ -112,7 +126,7 @@ playVideo confMap = do
       return ()
 
     Nothing ->
-      putStrLn "NO PATH! BAD!"
+      errorM lname "NO PATH! BAD!"
 
   ok $ toResponse ("got it" :: String)
 
@@ -122,17 +136,17 @@ delVideo = do
   method POST
   decodeBody bodyPolicy
 
-  liftIO $ putStrLn "Received delVideo request"
+  liftIO $ noticeM lname "Received delVideo request"
 
   mbBody <- takeRequestBody =<< askRq
   liftIO $ case mbBody of
     Just b -> do
       let playpath = BL.unpack . unBody $ b
-      --printf "deleting path: %s\n" playpath
+      infoM lname $ printf "Deleting path: %s\n" playpath
       removeLink playpath
 
     Nothing ->
-      putStrLn "NO PATH! BAD!"
+      errorM lname "NO PATH! BAD!"
 
   ok $ toResponse ("got it" :: String)
 

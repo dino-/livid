@@ -5,11 +5,16 @@
    Simple module for loading config files
 -}
 module Livid.Conf
-   ( ConfMap, parseToMap )
+   ( ConfMap
+   , lookupReadWithDefault
+   , parseToMap
+   )
    where
 
-import Data.Map hiding ( map )
+import Data.Map as Map hiding ( map )
 import Data.Maybe ( catMaybes )
+import Safe ( readMay, readNote )
+import Text.Printf ( printf )
 import Text.Regex ( matchRegex, mkRegex )
 
 
@@ -46,3 +51,12 @@ parseToMap entireConf =
       listToPair _      = undefined  -- Should never happen
 
       re = mkRegex "^([^#][^=]*)=?(.*)"
+
+
+lookupReadWithDefault :: Read b => Maybe b -> String -> ConfMap -> b
+lookupReadWithDefault mbDefaultVal key confMap = case mbDefaultVal of
+  Just defaultVal -> maybe defaultVal id $ readMay =<< Map.lookup key confMap
+  Nothing ->
+    maybe (error $ printf "Can't continue because '%s' not found in config" key) id $
+    readNote (printf "Can't continue because value for '%s' isn't parseable" key) <$>
+    Map.lookup key confMap
