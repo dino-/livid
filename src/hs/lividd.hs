@@ -14,7 +14,7 @@ import Data.Map
 -- FIXME
 import Data.Maybe ( fromJust )
 import Happstack.Server
-import Paths_lividd ( version )
+import Paths_livid ( version )
 import Prelude hiding ( lookup )
 import System.Environment ( getEnv )
 import System.FilePath ( (</>) )
