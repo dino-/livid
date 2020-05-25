@@ -47,7 +47,7 @@ The client is written in Coffeescript. To build it:
 Upon successful compilation, you can start, stop or restart the server with a
 supplied script:
 
-    $ ./livid-srv.sh start|stop|restart
+    $ ./lividd.sh start|stop|restart
 
 And then load the client in your browser:
 

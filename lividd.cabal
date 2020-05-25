@@ -1,4 +1,4 @@
-name:                livid-srv
+name:                lividd
 version:             1.8
 cabal-version:       >= 1.10
 build-type:          Simple
@@ -19,8 +19,8 @@ source-repository    head
    type:             git
    location:         https://github.com/dino-/livid.git
 
-executable           livid-srv
-   main-is:          livid-srv.hs
+executable           lividd
+   main-is:          lividd.hs
    hs-source-dirs:   src/hs
    build-depends:    aeson,
                      base >= 3 && < 5,

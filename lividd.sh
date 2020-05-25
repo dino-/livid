@@ -29,13 +29,13 @@ USAGE
 }
 
 
-binary=livid-srv
+binary=lividd
 cd $deploymentDir
 
 case "$1" in
    start|restart)
       killall -q $binary
-      nohup stack exec $binary 2>&1 >> livid-srv.log &
+      nohup stack exec $binary 2>&1 >> lividd.log &
       ;;
    stop)
       killall -q $binary
