@@ -1,0 +1,46 @@
+name: lividd
+version: '1.8'
+synopsis: LIst of VIDeos media browse/playback web app
+description: livid is a web application for browsing a directory tree of video files, launching playback and later deleting those files if desired. It's designed to be run locally on a system from within a gui environment so it can launch a video player application (like vlc, for example).
+license: ISC
+copyright: 2012-2016 Dino Morelli, Betty Diegel
+author: Dino Morelli, Betty Diegel
+maintainer: Dino Morelli <dino@ui3.info>,
+            Betty Diegel <bdiegel@usa.net>
+homepage: http://hub.darcs.net/dino/livid
+category: Application, Multimedia Player
+tested-with: GHC >= 8.0.1
+
+github: dino-/livid.git
+
+ghc-options:
+- -fwarn-tabs
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+executables:
+  lividd:
+    main: lividd.hs
+    source-dirs: src/hs
+    dependencies:
+    - aeson
+    - base >= 3 && < 5
+    - containers
+    - directory
+    - filepath
+    - ghc-prim
+    - happstack-server
+    - hslogger
+    - mtl
+    - process
+    - regex-compat
+    - safe
+    - time
+    - transformers
+    - unix
+    - utf8-string
+    ghc-options:
+    - -threaded
