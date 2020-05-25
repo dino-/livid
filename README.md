@@ -60,7 +60,8 @@ For more info, read about the
 
 ### Building the distributable package
 
-Deploy everything into the the package directory
+Deploy everything into the the package directory. Note: You will need hsinstall
+v2.6 or later.
 
     $ hsinstall
 
@@ -80,8 +81,11 @@ Edit the livid.conf file to reflect your video location, etc.
 Start the systemd service:
 
     $ systemctl --user daemon-reload
-    $ systemctl --user enable lividd
     $ systemctl --user start lividd
+
+Don't use systemctl enable on this service to start it after X starts. Instead,
+use your desktop environment's method of setting startup programs. Put the
+above systemctl start command in there.
 
 You should see good log output
 
