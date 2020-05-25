@@ -16,6 +16,8 @@ import Data.Maybe ( fromJust )
 import Happstack.Server
 import Paths_livid_srv ( version )
 import Prelude hiding ( lookup )
+import System.Environment ( getEnv )
+import System.FilePath ( (</>) )
 import System.IO
   ( BufferMode ( NoBuffering )
   , hSetBuffering, stdout, stderr
@@ -39,8 +41,8 @@ defaultHttpPort :: Int
 defaultHttpPort = 8082
 
 
-defaultConfFile :: FilePath
-defaultConfFile = "livid.conf"
+defaultConfFile :: IO FilePath
+defaultConfFile = (</> ".config" </> "livid.conf") <$> getEnv "HOME"
 
 
 main :: IO ()
@@ -76,7 +78,7 @@ routing = do
 
 
 loadConf :: IO ConfMap
-loadConf = fmap parseToMap $ readFile defaultConfFile
+loadConf = parseToMap <$> (readFile =<< defaultConfFile)
 
 
 readLogPriority :: ConfMap -> Priority
