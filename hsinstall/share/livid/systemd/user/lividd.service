@@ -1,0 +1,16 @@
+[Unit]
+Description=LiVid server daemon
+
+[Service]
+Type=simple
+
+# Production
+WorkingDirectory=/usr/share/livid
+ExecStart=/usr/bin/lividd
+
+# Development
+# WorkingDirectory=/YOUR/DEV/DIR/livid/AppDir/usr/share/livid
+# ExecStart=/YOUR/DEV/DIR/livid/AppDir/usr/bin/lividd
+
+[Install]
+WantedBy=multi-user.target

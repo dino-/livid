@@ -30,24 +30,64 @@ Or [browse the source](https://github.com/dino-/livid)
 
 ## Building and starting the server
 
-You may need to install some things:
+### The coffeescript/web parts
 
-- The [Haskell stack build utility](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
-- CoffeeScript's [cake build utility](https://coffeescript.org/#installation)
+Install the coffeescript tools locally. WARNING: The @ version here is very
+important. The generated JavaScript will not work with a modern Coffeescript
+like 2.5.1 or later!!
 
+    $ npm install --save-dev coffeescript@1.12.4
+
+And then fix up the environment in this shell
+
+    $ . util/coffee-env
+
+To build the web client:
+
+    $ cake build
+
+For more info, read about CoffeeScript's 
+[cake build utility](https://coffeescript.org/#installation)
+
+### The Haskell lividd server part
 
 The server is written in Haskell. To build it:
 
     $ stack build
 
-The client is written in Coffeescript. To build it:
+For more info, read about the 
+[Haskell stack build utility](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
 
-    $ cake build
+### Building the distributable package
 
-Upon successful compilation, you can start, stop or restart the server with a
-supplied script:
+Deploy everything into the the package directory
 
-    $ ./lividd.sh start|stop|restart
+    $ hsinstall
+
+Perform the Debian packaging
+
+    $ ./util/package.sh
+
+Once this is installed, you need to copy two files into the home directory of the user who is running X
+
+    $ cd
+    $ cp /usr/share/livid/livid.conf .config/
+    $ mkdir -p .config/systemd/user
+    $ cp /usr/share/livid/systemd/user/lividd.service .config/systemd/user
+
+Edit the livid.conf file to reflect your video location, etc.
+
+Start the systemd service:
+
+    $ systemctl --user daemon-reload
+    $ systemctl --user enable lividd
+    $ systemctl --user start lividd
+
+You should see good log output
+
+    $ journalctl --user -u lividd -f
+
+### Using the app
 
 And then load the client in your browser:
 

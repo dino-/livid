@@ -6,7 +6,7 @@
 # project variables
 
 srcDir = 'src/coffee'
-buildDir = 'site/js'
+buildDir = 'hsinstall/share/livid/site/js'
 
 
 # convenience function to exec shell commands with output
@@ -25,4 +25,4 @@ task 'build', 'Compiles CoffeeScript to JavaScript', ->
 
 
 task 'clean', 'Clean up build artifacts', ->
-   system "rm -rfv #{buildDir}/*"
+   system "rm -rfv #{buildDir}"
