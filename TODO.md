@@ -1,3 +1,0 @@
-- Do extra-source-files, we can't make a proper sdist at this time
-- Real logging with levels. Log file path in conf?
-- Add changelog
