@@ -15,7 +15,6 @@ import Data.Char ( toLower )
 import Data.Either ( partitionEithers )
 import Data.Function ( on )
 import Data.Aeson ( FromJSON, ToJSON )
---import Data.ByteString.Lazy.Char8 hiding ( filter, notElem, map )
 import Data.List
 import GHC.Generics ( Generic )
 import System.Directory ( doesDirectoryExist, getDirectoryContents )
